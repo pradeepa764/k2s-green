@@ -1,0 +1,69 @@
+﻿
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+@{
+    var sectionTitle = Model.Value<string>("impactSectiontitle");
+    var sectionSubtitle = Model.Value<string>("impactSectionSubtitle");
+    var image = Model.Value<IPublishedContent>("impactImage");
+    var items = Model.Value<IEnumerable<BlockListItem>>("accordionItems");
+}
+
+<div class="impact-area defaultPadding">
+    <div class="k2s-green-container">
+
+        <!-- Section Header -->
+        <div class="header-title center">
+            <h2 class="title-center black">@sectionTitle</h2>
+            @if (!string.IsNullOrEmpty(sectionSubtitle))
+            {
+                <p class="lightblack">@sectionSubtitle</p>
+            }
+        </div>
+
+        <div class="ant-row" style="margin-left: -8px; margin-right: -8px; row-gap: 16px;">
+            <!-- Accordion Column -->
+            <div class="ant-col ant-col-xs-24 ant-col-md-12" style="padding-left: 8px; padding-right: 8px;">
+                <div class="ant-collapse ant-collapse-icon-position-end k2sgreen-accordion" role="tablist">
+                    @if (items != null && items.Any())
+                    {
+                        int index = 0;
+                        foreach (var item in items)
+                        {
+                            var content = item.Content;
+                            var isExpanded = content.Value<bool>("isExpanded");
+                            <div class="ant-collapse-item @(isExpanded ? "ant-collapse-item-active" : "")">
+                                <div class="ant-collapse-header" role="tab" aria-expanded="@(isExpanded.ToString().ToLower())" tabindex="0">
+                                    <div class="ant-collapse-expand-icon">
+                                        <span role="img" class="anticon @(isExpanded ? "anticon-minus" : "anticon-plus") ant-collapse-arrow"></span>
+                                    </div>
+                                    <span class="ant-collapse-header-text">@content.Value("accordionItemTitle")</span>
+                                </div>
+                                @if (isExpanded)
+                                {
+                                    <div class="ant-collapse-content ant-collapse-content-active" role="tabpanel">
+                                        <div class="ant-collapse-content-box">
+                                            <p>@content.Value("accordionItemDescription")</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            index++;
+                        }
+                    }
+                </div>
+            </div>
+
+            <!-- Image Column -->
+            <div class="ant-col ant-col-xs-24 ant-col-md-12" style="padding-left: 8px; padding-right: 8px;">
+                @if (image != null)
+                {
+                    <div class="impact-image-wrapper">
+                        <img class="impact-image" src="@image.Url()" alt="@sectionTitle" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+
+
+<div class="header-title center mt100">
+    <h2 class="title-center black">@Model.Value("whyGreenTitle")</h2>
+    <p class="lightblack">@Model.Value("whyGreenDescription") </p>
+</div>
+
+            <div class="ant-row solutions-grid pdt50 css-240cud">
+    @foreach (var item in Model.Value<IEnumerable<BlockListItem>>("WhyK2sGreen"))
+    {
+<div class="ant-col ant-col-6">
+            <div class="columnStyle2 s2">
+                @{
+    var title = item.Content.Value<string>("counter");
+    var description = item.Content.Value<string>("description");
+}
+<div class="counter">@title</div>
+<p>@description</p>
+
+            </div>
+        </div>
+    }
+</div>
+<style>
+    element.style {
+    margin-left: -8px;
+    margin-right: -8px;
+}
+.pdt50 {
+    padding: 50px 0 0;
+}
+<style>
+:where(.css-240cud).ant-row {
+    display: flex
+;
+    flex-flow: row wrap;
+    min-width: 0;
+}
+<style>
+:where(.css-240cud).ant-row {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-size: 14px;
+    box-sizing: border-box;
+}
+a, button, div, input, select {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+user agent stylesheet
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
+body {
+    font-family: "F37 Ginger";
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+<style>
+:where(.css-240cud).ant-row::before, :where(.css-240cud).ant-row::after {
+    display: flex
+;
+}
+<style>
+:where(.css-240cud).ant-row::before, :where(.css-240cud).ant-row::after {
+    box-sizing: border-box;
+}
+<style>
+:where(.css-240cud).ant-row::before, :where(.css-240cud).ant-row::after {
+    display: flex
+;
+}
+<style>
+:where(.css-240cud).ant-row::before, :where(.css-240cud).ant-row::after {
+    box-sizing: border-box;
+}
+.whyk2s-row {
+    display: flex;
+    flex-wrap: nowrap;    /* don't wrap to new line */
+    overflow-x: auto;     /* scroll if too many items */
+    gap: 20px;            /* spacing between cards */
+}
+
+.whyk2s-row .ant-col {
+    flex: 0 0 25%;        /* show 4 per row on desktop */
+    min-width: 200px;     /* fallback for smaller screens */
+}
+
+</style>
+
+
+

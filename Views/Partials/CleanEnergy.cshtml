@@ -1,0 +1,58 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+
+@{
+    var heading = Model.Value<string>("cleanEnergyTitle");
+    var desc = Model.Value<string>("cleanEnergyDescription");
+    var features = Model.Value<IEnumerable<BlockListItem>>("energyColumns");
+}
+
+<section class="clean-energy">
+    <div class="k2s-green-container defaultPadding">
+        <div data-aos="fade-left" data-aos-duration="500" class="ant-row css-240cud">
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-sm-12 ant-col-md-12 css-240cud">
+                <div class="header-title white">
+                    @if (!string.IsNullOrWhiteSpace(heading))
+                    {
+                        <h2>@heading</h2>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(desc))
+                    {
+                        <p class="blue">@desc</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @if (features != null && features.Any())
+        {
+            <div class="ant-row pdt50 css-240cud" style="margin-left: -16px; margin-right: -16px;">
+    @{
+        int delay = 500;
+        var energyColumns = Model.Value<IEnumerable<BlockListItem>>("energyColumns");
+    }
+
+    @if (energyColumns != null)
+    {
+        foreach (var item in energyColumns)
+        {
+            var number = item.Content.Value<string>("number");
+            var title = item.Content.Value<string>("title");
+            var description = item.Content.Value<string>("description");
+
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-sm-12 ant-col-md ant-col-lg css-240cud" 
+                 style="padding-left: 16px; padding-right: 16px; flex: 1 1 0;">
+                <div class="columnStyle s1" data-aos="fade-up" data-aos-duration="@delay">
+                    <div class="counter mt70">@number</div>
+                    <h5>@title</h5>
+                    <p>@description</p>
+                </div>
+            </div>
+
+            delay += 400;
+        }
+    }
+</div>
+    }
+    </div>
+</section>

@@ -1,0 +1,51 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+@{
+    // Text fields
+    var subtitle = Model.Value<string>("subHeading");
+    var heading = Model.Value<string>("heading");
+    var buttonText = Model.Value<string>("ctaText");
+
+    // Link (fallback as IPublishedContent)
+    var buttonLink = Model.Value<IPublishedContent>("ctaLink"); 
+
+    // Floating images
+    var images = Model.Value<IEnumerable<IPublishedContent>>("images");
+
+    // Section background image
+    var backgroundImage = Model.Value<IPublishedContent>("smartBackgroundImage");
+
+    // Background style
+    var bgStyle = backgroundImage != null ? $"background-image:url('{backgroundImage.Url()}'); background-size:cover; background-position:center;" : "";
+}
+
+<div class="smart-approach default" style="@bgStyle">
+    <div class="k2s-green-container defaultPadding">
+
+        @* Subtitle *@
+        @if (!string.IsNullOrWhiteSpace(subtitle))
+        {
+            <h5 data-aos="fade-up" data-aos-anchor-placement="top-center" class="aos-init aos-animate">@subtitle</h5>
+        }
+
+        <div class="header-title white">
+
+            @* Heading *@
+            @if (!string.IsNullOrWhiteSpace(heading))
+            {
+                <h2 data-aos="fade-up" data-aos-anchor-placement="top-center"class="aos-init aos-animate">@Html.Raw(heading)</h2>
+            }
+
+            @* CTA Button *@
+            @if (buttonLink != null && !string.IsNullOrWhiteSpace(buttonText))
+            {
+                <a class="morebutton" href="@buttonLink.Url()" target="@(buttonLink.Value<string>("target") ?? "_self")">
+                    @buttonText <i class="arrow-right"></i>
+                </a>
+            }
+
+            @* Floating Images *@
+       <div class="smallPic"><div class="pic pos1 aos-init aos-animate" data-aos="fade-up" data-aos-duration="100" data-aos-offset="-200" data-aos-anchor-placement="top-center"></div><div class="pic pos2 aos-init aos-animate" data-aos="fade-up" data-aos-duration="100" data-aos-offset="-200" data-aos-anchor-placement="top-center"></div><div class="pic pos3 aos-init aos-animate" data-aos="fade-up" data-aos-duration="100" data-aos-offset="-200" data-aos-anchor-placement="top-center"></div><div class="pic pos4 aos-init aos-animate" data-aos="fade-up" data-aos-duration="100" data-aos-offset="-200" data-aos-anchor-placement="top-center"></div></div>
+    </div>
+</div>

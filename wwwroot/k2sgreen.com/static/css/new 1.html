@@ -1,0 +1,43 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    // Change "bannerImage" to your actual property alias from Umbraco
+    var bannerImage = Model.Value<IPublishedContent>("bannerImage");
+    var bannerTitle = Model.Value<string>("bannerTitle") ?? "About Us";
+    var mainHeading = Model.Value<string>("mainHeading") ?? "";
+    var mainText = Model.Value<string>("mainText") ?? "";
+
+    // If no image is selected in Umbraco, use the default
+    var bannerImageUrl = bannerImage?.Url() ?? Url.Content("~/images/bannerinner1.jpg");
+}
+
+<section class="landing-screen about defaultPaddingBanner">
+  
+
+<div style="padding: 20px; background: #eee;">
+  
+</div>
+
+    
+    <div class="k2s-green-container inner alltab">
+        <div class="header-title center aos-init aos-animate" data-aos="fade-up">
+            <h1>@bannerTitle</h1>
+            @if (!string.IsNullOrWhiteSpace(mainHeading))
+            {
+                <h2>@mainHeading</h2>
+            }
+            @if (!string.IsNullOrWhiteSpace(mainText))
+            {
+                <p>@Html.Raw(mainText)</p>
+            }
+        </div>
+
+        <div class="image-wrapper aos-init">
+<div>
+<img src="@bannerImageUrl" alt="@bannerImage?.Name ?? "Banner Image"" style="width:100%; height:auto;" />
+</div>
+
+
+        </div>
+    </div>
+</section>

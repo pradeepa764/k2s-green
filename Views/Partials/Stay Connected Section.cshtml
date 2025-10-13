@@ -1,0 +1,69 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>
+
+@{
+    // Dynamic fields from the Stay Connected Document Type
+    var stayConnectedImage = Model.Value<IPublishedContent>("stayconnectedImage");
+    var stayConnectedTitle = Model.Value<string>("stayconnectedtitle");
+    var stayConnectedSubtitle = Model.Value<string>("stayconnectedsubtitle");
+
+    var formTitle = Model.Value<string>("formTitle");
+    var formSubtitle = Model.Value<string>("formSubtitle");
+
+    var buttonText = Model.Value<string>("subscribeButtonText") ?? "SUBSCRIBE";
+}
+
+<div class="stay-connected" id="stay-connected">
+    <div class="k2s-green-container defaultPadding">
+        <div class="ant-row">
+            <!-- Left Column -->
+            <div class="ant-col ant-col-sm-24 ant-col-md-12">
+                <div class="bgblue containerPadding">
+                    <div class="img_stay_connected">
+                        @if(stayConnectedImage != null)
+                        {
+                            <img src="@stayConnectedImage.Url()" alt="@stayConnectedTitle" />
+                        }
+                    </div>
+                    <div class="header-title pd50 white">
+                        <h4>@stayConnectedTitle</h4>
+                        <p>@Html.Raw(Model.Value("stayConnectedSubtitle"))</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="ant-col ant-col-sm-24 ant-col-md-12">
+                <div class="bgwhite containerPadding bs">
+                    <div class="header-title">
+                        <h3>@formTitle</h3>
+                        <p>@formSubtitle</p>
+                    </div>
+
+                    <div class="ant-row">
+                        <div class="ant-col ant-col-sm-12">
+                            <input id="firstName" placeholder="First Name" class="ant-input ant-input-lg inputFeild" type="text" />
+                        </div>
+                        <div class="ant-col ant-col-sm-12">
+                            <input id="lastName" placeholder="Last Name" class="ant-input ant-input-lg inputFeild" type="text" />
+                        </div>
+                    </div>
+
+                    <div class="ant-row">
+                        <div class="ant-col ant-col-24">
+                            <input id="email" placeholder="Enter Your Email" class="ant-input ant-input-lg inputFeild" type="email" />
+                        </div>
+                                        </div>
+
+                    <div class="ant-col ant-col-24">
+                        <textarea id="message" placeholder="Enter your message" rows="2" class="ant-input ant-input-lg inputFeild"></textarea>
+                    </div>
+
+                    <button type="button" class="ant-btn ant-btn-primary morebutton">
+                        @buttonText <i class="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

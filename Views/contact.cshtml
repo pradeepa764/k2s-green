@@ -1,0 +1,9 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Contac>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "Master1.cshtml";
+}
+  <main>
+                    @await Html.PartialAsync("ContactForm")
+                </main>

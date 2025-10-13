@@ -1,0 +1,24 @@
+﻿@inherits UmbracoViewPage
+
+@{
+    var siteSettings = Model.GetSiteSettings();
+    var footerContent = siteSettings?.Value<Umbraco.Cms.Core.Models.Blocks.BlockGridModel>("footerContent");
+
+    if (footerContent is null) return;
+}
+
+<footer class="footer text-center">
+    <div class="container">
+        <div class="row">
+            @await Html.GetBlockGridHtmlAsync(footerContent)
+        </div>
+    </div>
+</footer>
+
+<div class="copyright py-4 text-center text-white">
+    <div class="container">
+        <small>
+            &copy; @Umbraco.GetDictionaryValue("CopyrightStatement", "Copyright Paul Seal") @DateTime.Now.Year
+        </small>
+    </div>
+</div>

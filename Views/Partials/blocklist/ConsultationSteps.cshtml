@@ -1,0 +1,49 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+
+@{
+    var steps = Model.Value<IEnumerable<BlockListItem>>("consultationSteps");
+}
+<div class="defaultPadding g-bb-gray">
+<div class="k2s-green-container">
+    <div class="ant-row css-240cud" style="margin-left: -8px; margin-right: -8px;">
+            <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px; margin: 0 auto; text-align:center;">
+            <div class="header-title center">
+                <h2>Our Consultation Process</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="pdt50">
+        @if (steps != null && steps.Any())
+        {
+            <div class="stepper-container">
+                <div class="ant-row ant-row-center ant-row-middle stepper-row css-240cud">
+                    @foreach (var (step, index) in steps.Select((s, i) => (s, i)))
+                    {
+                        var title = step.Content.Value("stepTitle");
+                        var desc  = step.Content.Value("stepDescription");
+
+                        <div class="ant-col step-item ant-col-xs-24 ant-col-sm-12 ant-col-md-8 ant-col-lg-4">
+                            <div class="step-circle-container">
+                                @if (index > 0)
+                                {
+                                    <div class="dashline"></div>
+                                }
+                                <div class="step-circle">Step @(index + 1)</div>
+                            </div>
+                            <div class="header-title">
+                                <h5>@title</h5>
+                                <p class="step-description">@desc</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>No consultation steps added yet.</p>
+        }
+    </div>
+</div>

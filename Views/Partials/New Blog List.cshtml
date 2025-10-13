@@ -1,0 +1,94 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@{
+    // -----------------------------
+    // LEFT COLUMN: insightArticle composition (direct properties)
+    // -----------------------------
+    var leftTitle = Model.Value<string>("articleTitle") ?? "No Title";
+    var leftDescription = Model.Value<string>("excerpt") ?? "";
+    var leftImage = Model.Value<IPublishedContent>("mainImage"); // Media Picker
+    var leftLink = Model.Value<IPublishedContent>("link")?.Url() ?? "#";
+
+    // -----------------------------
+    // RIGHT COLUMN: latest blog posts
+    // -----------------------------
+    var blogRoot = Umbraco.ContentAtRoot()
+                          .DescendantsOrSelfOfType("insights")
+                          .FirstOrDefault()?
+                          .ChildrenOfType("newBlogList")
+                          .FirstOrDefault();
+
+    var articles = blogRoot?.ChildrenOfType("insightBlogPost")
+                           .OrderByDescending(x => x.Value<DateTime?>("publishDate"))
+                           .Take(4)
+                           .ToList() ?? new List<IPublishedContent>();
+
+    string FormatDate(DateTime? date) => date?.ToString("dd MMM, yyyy") ?? "";
+}
+
+<div class="insights">
+    <div class="k2s-green-container">
+
+        <!-- Header -->
+        <div class="header-title">
+            <h3 class="title-center">Insights</h3>
+            <a class="morebutton" href="/insights">View all <i class="arrow-right"></i></a>
+        </div>
+
+        <div class="flexbox mt70" data-aos="fade-up">
+
+            <!-- LEFT COLUMN -->
+            <div class="insight-item-left">
+                <div class="insight-item-left-wrapper">
+                    <h4 class="full"><a href="@leftLink">@leftTitle</a></h4>
+<p>@Html.Raw(leftDescription)</p>                    
+<a class="flexbox readmore" href="@leftLink">Read More</a>
+                </div>
+                <div class="insight-image">
+                    @if(leftImage != null)
+                    {
+                        <img src="@leftImage.Url()" alt="@leftTitle" />
+                    }
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="insight-item-right" data-aos="fade-up">
+                <div class="insight-item-left-wrapper">
+                    @if(articles.Any())
+                    {
+                        @foreach(var article in articles)
+                        {
+                            var title = article.Value<string>("postTitle") ?? "No Title";
+                            var summary = article.Value<string>("summary") ?? "";
+                            var url = article.Url();
+                            var thumb = article.Value<IPublishedContent>("image");
+                            var thumbUrl = thumb != null ? thumb.Url() : "/images/placeholder.png";
+                            var publishDate = article.Value<DateTime?>("publishDate");
+
+                            <div class="insight-news-wrapper spacer">
+                                <div class="insight-news-item">
+                                    <span class="date">@FormatDate(publishDate)</span>
+                                    <h4><a href="@url">@title</a></h4>
+                                    <p>@summary</p>
+                                    <div class="flexbox">
+                                        <a class="readmore" href="@url">Read More</a>
+                                    </div>
+                                </div>
+                                <div class="insight-image">
+                                    <img src="@thumbUrl" alt="@title" />
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No blog posts found!</p>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

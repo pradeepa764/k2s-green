@@ -1,0 +1,74 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+
+@{
+    var aboutTabs = Model.Value<IEnumerable<BlockListItem>>("aboutTabs") ?? Enumerable.Empty<BlockListItem>();
+    var tabCount = aboutTabs.Count();
+}
+
+<div class="k2s-green-container inner tab">
+    <div class="customTabWrapper about">
+        <ul class="tab-list tablength-@tabCount">
+            @for (int i = 0; i < tabCount; i++)
+            {
+                var listTitle = aboutTabs.ElementAt(i).Content.Value<string>("title");
+                <li class="@(i == 0 ? "selected" : "")">@listTitle</li>
+            }
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        @for (int i = 0; i < tabCount; i++)
+        {
+            var tab = aboutTabs.ElementAt(i);
+            var heading = tab.Content.Value<string>("title");
+            var text = tab.Content.Value<string>("description");
+            var image = tab.Content.Value<IPublishedContent>("image");
+
+            <div class="aboutcontent @(i == 0 ? "active" : "hidden")">
+                <div class="aboutcontent-inner" style="display:flex; gap:20px; align-items:flex-start;">
+                    <div class="text-content" style="flex:1;">
+                        <div class="header-title black flexstyle">
+                            <h4 class="ant-typography">@heading</h4>
+                            <p class="ant-typography ant-typography-secondary">@Html.Raw(text)</p>
+                        </div>
+                    </div>
+                    <div class="about-img-wrapper" style="flex:1;">
+                        @if (image != null)
+                        {
+                            <img alt="@heading" src="@image.Url()" style="width:100%;" />
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll(".tab-list li");
+    const panes = document.querySelectorAll(".aboutcontent");
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener("click", function () {
+            tabs.forEach(t => t.classList.remove("selected"));
+            panes.forEach(p => {
+                p.classList.remove("active");
+                p.classList.add("hidden");
+            });
+
+            this.classList.add("selected");
+            panes[index].classList.add("active");
+            panes[index].classList.remove("hidden");
+        });
+    });
+});
+</script>
+
+<style>
+.aboutcontent.hidden { display: none; }
+.aboutcontent.active { display: block; }
+</style>

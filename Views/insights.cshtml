@@ -1,0 +1,174 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+@using System.Text.RegularExpressions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Insights>
+
+@{
+    Layout = "Master1.cshtml";
+
+    var heading = Model.Value<string>("heading");        
+    var highlight = Model.Value<string>("highLightWord"); 
+
+    // Get the blog list node
+    var blogList = Model.Children()
+                        .FirstOrDefault(x => x.ContentType.Alias == "insightBlogList");
+
+    // Separate Insights and News
+    var insightPosts = blogList?.Children()
+                               .Where(x => x.ContentType.Alias == "insightBlogPost" 
+                                           && !x.Value<bool>("isNews"))
+                               .OrderByDescending(x => x.Value<DateTime>("date"));
+
+    var newsPosts = blogList?.Children()
+                             .Where(x => x.ContentType.Alias == "insightBlogPost" 
+                                         && x.Value<bool>("isNews"))
+                             .OrderByDescending(x => x.Value<DateTime>("date"));
+}
+
+<div class="landing-screen news defaultPadding">
+    <div class="k2s-green-container inner alltab">
+
+        <!-- Dynamic Page Header -->
+        <div class="header-title center" data-aos="fade-up">
+            <h1>
+                @heading
+                <span style="color: rgb(203, 9, 105);">@highlight</span>
+            </h1>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container news-article">
+            <div class="news">
+                <div class="customTabWrapper news">
+                    <ul class="tab-list tablength-2">
+                        <li class="selected" data-tab="insights">Insights</li>
+                        <li data-tab="news">News</li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+
+                    <!-- Insights Tab -->
+                    <div class="tab-pane active" id="insights">
+                        <div class="ant-row css-240cud" style="margin-left:-8px; margin-right:-8px; row-gap:16px;">
+                            @if (insightPosts != null && insightPosts.Any())
+                            {
+                                foreach (var blog in insightPosts)
+                                {
+                                    var title = blog.Value<string>("title");
+                                    var date = blog.Value<DateTime>("date");
+                                    var body = blog.Value<string>("body");
+                                    var url = blog.Url();
+                                    var image = blog.Value<IPublishedContent>("image");
+                                    var imageUrl = image != null ? image.Url() : "/images/default-blog.jpg";
+
+                                    var plainText = Regex.Replace(body ?? "", "<.*?>", "");
+                                    var excerpt = !string.IsNullOrWhiteSpace(plainText) && plainText.Length > 150
+                                        ? plainText.Substring(0, 150) + "..."
+                                        : plainText;
+
+                                    <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-12 ant-col-lg-12 css-240cud" style="padding-left:8px; padding-right:8px;">
+                                        <div class="insight-card">
+                                            <div class="image-container">
+                                                <img src="@imageUrl" alt="@title" />
+                                            </div>
+                                            <div class="header-title">
+                                                <div class="date-overlay">@date.ToString("dd MMM, yyyy")</div>
+                                                <h5 class="title">
+                                                    <a href="@url">@title</a>
+                                                </h5>
+                                                <div class="content">@excerpt</div>
+                                                <a class="morebutton btn" href="@url">Read More <i class="arrow-right pink"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>No Insights available.</p>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- News Tab -->
+                    <div class="tab-pane" id="news">
+                        <div class="ant-row css-240cud" style="margin-left:-8px; margin-right:-8px; row-gap:16px;">
+                            @if (newsPosts != null && newsPosts.Any())
+                            {
+                                foreach (var blog in newsPosts)
+                                {
+                                    var title = blog.Value<string>("title");
+                                    var date = blog.Value<DateTime>("date");
+                                    var body = blog.Value<string>("body");
+                                    var url = blog.Url();
+                                    var image = blog.Value<IPublishedContent>("image");
+                                    var imageUrl = image != null ? image.Url() : "/images/default-blog.jpg";
+
+                                    var plainText = Regex.Replace(body ?? "", "<.*?>", "");
+                                    var excerpt = !string.IsNullOrWhiteSpace(plainText) && plainText.Length > 150
+                                        ? plainText.Substring(0, 150) + "..."
+                                        : plainText;
+
+                                    <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-12 ant-col-lg-12 css-240cud" style="padding-left:8px; padding-right:8px;">
+                                        <div class="insight-card">
+                                            <div class="image-container">
+                                                <img src="@imageUrl" alt="@title" />
+                                            </div>
+                                            <div class="header-title">
+                                                <div class="date-overlay">@date.ToString("dd MMM, yyyy")</div>
+                                                <h5 class="title">
+                                                    <a href="@url">@title</a>
+                                                </h5>
+                                                <div class="content">@excerpt</div>
+                                                <a class="morebutton btn" href="@url">Read More <i class="arrow-right pink"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>No News available.</p>
+                            }
+                        </div>
+                    </div>
+
+                </div> <!-- .tab-content -->
+                <div class="morebutton loadmore">Load More</div>
+            </div>
+        </div>
+
+    </div> <!-- .k2s-green-container -->
+</div> <!-- .landing-screen -->
+
+<!-- Tab Switching Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll(".tab-list li");
+    const panes = document.querySelectorAll(".tab-pane");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", function () {
+            // reset all
+            tabs.forEach(t => t.classList.remove("selected"));
+            panes.forEach(p => p.classList.remove("active"));
+
+            // activate selected
+            this.classList.add("selected");
+            const target = this.getAttribute("data-tab");
+            document.getElementById(target).classList.add("active");
+        });
+    });
+});
+</script>
+
+<style>
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+.tab-list li.selected { font-weight: bold; border-bottom: 2px solid #cb0969; }
+</style>
+
+
+
+@await Html.PartialAsync("Stay Connected Section")

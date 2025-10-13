@@ -1,0 +1,35 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+@{
+    var heroVideo = Model.Value<IPublishedContent>("heroVideo");
+}
+<div class="landing-screen defaultPadding">
+    <div class="k2s-green-containe">>
+        <div class="header-title">
+            <div class="title-left" data-aos="fade-left">
+                @Model.Value("heroLeftTitle")
+            </div>
+            <div class="title-right" data-aos="fade-right">
+                @Model.Value("heroRightTitle")
+            </div>
+        </div>
+
+        <div class="moreabout">
+            <p>@Model.Value("heroDescription")</p>
+            <a class="morebutton" href="/contact">
+                Learn More <i class="arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="image-wrapper" data-aos="fade-up">
+            @if (heroVideo != null)
+            {
+                <video autoplay muted loop playsinline>
+                    <source src="@heroVideo.Url()" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            }
+        </div>
+    </div>
+</div>

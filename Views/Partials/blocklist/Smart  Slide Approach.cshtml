@@ -1,0 +1,61 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+
+@{
+    var slides = Model.Value<IEnumerable<BlockListItem>>("slides");
+    int totalSlides = slides?.Count() ?? 0;
+}
+
+<div class="smart-approach about">
+    <div class="k2s-green-container defaultPadding_xl">
+        <div class="ant-row css-240cud">
+            <div data-aos="fade-up" data-aos-anchor-placement="top-center"
+                 class="ant-col g-bb-white containerPadding ant-col-xs-24 ant-col-md-8 css-240cud">
+
+                <div class="slick-slider-container">
+                    <div class="slick-slider">
+                        @if (slides != null && slides.Any())
+                        {
+                            foreach (var slide in slides)
+                            {
+                                var title = slide.Content.Value<string>("slideTitle");
+                                var description = slide.Content.Value<string>("slideDescription");
+
+                                <div class="slide">
+                                    <div class="header-title auto" style="width:100%; display:inline-block;">
+                                        <h3>@title</h3>
+                                        <p>@Html.Raw(description)</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    @if (totalSlides > 0)
+                    {
+                        <div class="slide-counter">1 / @totalSlides</div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    $('.slick-slider').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: false,
+        infinite: true,
+         centerMode: false, 
+
+        customPaging: function (slider, i) {
+            return '<div class="custom-dot"></div>';
+        }
+    });
+});
+</script>

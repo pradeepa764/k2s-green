@@ -1,0 +1,68 @@
+@font-face {
+    font-family: 'F37Ginger-Light';
+    src: url('/fonts/F37Ginger-Light.woff2') format('woff2'),
+         url('/fonts/F37Ginger-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    background-color: #f9f9f9;
+}
+
+.navbar-brand {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #cb0969;
+    text-decoration: none;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-nav li {
+    position: relative;
+}
+
+.navbar-nav a {
+    color: #1b1f3b;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.navbar-nav .active a,
+.navbar-nav .current a,
+.navbar-nav a:hover {
+    color: #cb0969;
+    border-bottom: 2px solid #cb0969;
+}
+.image-wrapper img,
+.k2s-green-container .image-wrapper img {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+     position: static !important;
+}
+/* === Navbar color overrides === */
+.navbar-nav a {
+    color: #1b1f3b !important;
+}
+
+.navbar-nav a:hover {
+    color: #cb0969 !important;
+    border-bottom: 2px solid #cb0969 !important;
+}

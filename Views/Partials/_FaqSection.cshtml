@@ -1,0 +1,129 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+
+<div class="energy_solutions defaultPadding g-bb-gray">
+    <div class="k2s-green-container">
+        <!-- FAQ Title -->
+        <div class="header-title black center">
+            <h2>@Model.Value("faqTitle")</h2>
+        </div>
+
+        <!-- Accordion -->
+        <div class="k2sgreen-accordion faq">
+            @if (Model.Value<IEnumerable<BlockListItem>>("faqItems") is IEnumerable<BlockListItem> faqItems && faqItems.Any())
+            {
+                var index = 0;
+                foreach (var faq in faqItems)
+                {
+                    var content = faq.Content;
+                    var question = content.Value<string>("question");
+                    var answer = content.Value<string>("answer");
+                    index++;
+
+                    <div class="faq-item">
+                        <!-- Hidden checkbox -->
+                        <input type="checkbox" id="faq-toggle-@index" class="faq-toggle" @(index==1 ? "checked" : "") />
+
+                        <label for="faq-toggle-@index" class="ant-collapse-header">
+                            <div class="ant-collapse-expand-icon">
+                                <!-- Plus icon -->
+                                <span class="anticon anticon-plus ant-collapse-arrow">
+                                    <svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor">
+                                        <path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path>
+                                        <path d="M192 474h672q8 0 8 8v60q0 8-8 8H160q-8 0-8-8v-60q0-8 8-8z"></path>
+                                    </svg>
+                                </span>
+                                <!-- Minus icon -->
+                                <span class="anticon anticon-minus ant-collapse-arrow">
+                                    <svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor">
+                                        <path d="M872 474H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h720c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <span class="ant-collapse-header-text">@question</span>
+                        </label>
+
+                        <div class="ant-collapse-content">
+                            <div class="ant-collapse-content-box">
+                                <div class="faq-content">
+                                    @Html.Raw(answer)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+/* Hide checkbox */
+.faq-toggle { display: none; }
+
+/* Collapse content by default */
+.faq-item .ant-collapse-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+/* Expand content when checked */
+.faq-toggle:checked ~ label + .ant-collapse-content {
+    max-height: 500px; /* adjust if needed */
+}
+
+/* Toggle plus/minus icons */
+.faq-item .anticon-minus { display: none; }
+.faq-toggle:checked ~ label .anticon-plus { display: none; }
+.faq-toggle:checked ~ label .anticon-minus { display: inline-block; }
+
+/* Header styling */
+.ant-collapse-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px 16px;
+}
+.ant-collapse-expand-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+}
+.ant-collapse-header-text {
+    font-size: 24px;
+    font-weight: 300;
+    color: rgb(23, 28, 77);
+}
+
+/* Active colors */
+.faq-toggle:checked ~ label .ant-collapse-header-text,
+.faq-toggle:checked ~ label .ant-collapse-expand-icon {
+    color: rgb(203, 9, 105);
+}
+
+/* FAQ content styling */
+.k2sgreen-accordion.faq .faq-content {
+    color: rgb(23, 28, 77);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Remove Ant Design pseudo-elements */
+.k2sgreen-accordion.faq [class^="ant-collapse"]::before,
+.k2sgreen-accordion.faq [class*=" ant-collapse"]::before,
+.k2sgreen-accordion.faq [class^="ant-collapse"]::after,
+.k2sgreen-accordion.faq [class*=" ant-collapse"]::after {
+    content: none;
+}
+
+/* Item borders */
+.k2sgreen-accordion.faq .faq-item {
+    border-top: 1px solid rgb(184, 185, 204);
+}
+
+/* First item border fix */
+.k2sgreen-accordion.faq .faq-item:first-child {
+    border-top: none;
+}
+</style>

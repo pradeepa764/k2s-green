@@ -1,0 +1,26 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+
+@{
+    var missionPoints = Model.Value<BlockListModel>("MissionPoints");
+}
+
+@if (missionPoints != null && missionPoints.Any())
+{
+    <div class="ant-row pdt50 css-240cud" style="margin-left: -16px; margin-right: -16px;">
+        @foreach (var item in missionPoints)
+        {
+            var number = item.Content.Value<string>("pointNum");
+            var text = item.Content.Value<string>("pointText");
+
+            <div data-aos="flip-up"
+                 class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-6 ant-col-sm-12 css-240cud aos-init aos-animate"
+                 style="padding-left: 16px; padding-right: 16px;">
+                <div class="columnStyle s1">
+                    <div class="counter mt50">@number</div>
+                    <p class="full">@Html.Raw(text)</p>
+                </div>
+            </div>
+        }
+    </div>
+}

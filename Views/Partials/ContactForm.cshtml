@@ -1,0 +1,122 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+
+@{
+    // Get block list (adjust alias to your document type property)
+    var steps = Model.Value<BlockListModel>("consultationSteps");
+}
+<div class="landing-screen defaultPadding">
+
+    <div class="k2s-green-container">
+        <div class="modelPopup contact">
+            <div class="ant-row css-240cud">
+
+                <!-- Left Column: Contact Details -->
+                <div class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-10 css-240cud">
+                    <div class="flex_col_style">
+                        <div class="header-title">
+                            <h4>@Model.Value("contactTitle")</h4>
+                        </div>
+                        <div class="contact-info-block">
+                            <h6>Contact Details</h6>
+                            <div class="mobile">
+                                <span>Phone</span>
+                                <span>@Model.Value("contactPhone")</span>
+                            </div>
+                            <div class="mobile">
+                                <span>Address</span>
+                                <span>@Model.Value("contactAddress")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Image and Form -->
+                <div class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-14 css-240cud">
+                    <div class="ant-row css-240cud">
+                        <div class="ant-col ant-col-xs-24 ant-col-sm-24 ant-col-md-24 css-240cud">
+                            <div class="imageWrapper">
+                                @{
+                                    var image = Model.Value<IPublishedContent>("contactImage");
+                                    if (image != null)
+                                    {
+                                        <img alt="@image.Name" src="@image.Url()" />
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="ant-col ant-col-xs-24 ant-col-sm-24 ant-col-md-24 css-240cud">
+                            <div class="bgwhite bs stay-connected white">
+                                <!-- Static Form (can later be replaced with Umbraco Forms) -->
+                                <div class="form-feild">
+                                    <input id="firstName" placeholder="First Name" class="ant-input inputFeild" type="text" />
+                                </div>
+                                <div class="form-feild">
+                                    <input id="lastName" placeholder="Last Name" class="ant-input inputFeild" type="text" />
+                                </div>
+                                <div class="form-feild">
+                                    <input id="email" placeholder="Your Email" class="ant-input inputFeild" type="email" />
+                                </div>
+                                <div class="form-feild">
+                                    <textarea id="message" placeholder="Enter your message" rows="2" class="ant-input inputFeild"></textarea>
+                                </div>
+                                <button type="button" class="ant-btn ant-btn-primary morebutton">
+                                    <span>SUBSCRIBE</span>
+                                    <i class="arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Consultation Process -->
+<div class="defaultPadding g-bb-gray">
+        <div class="k2s-green-container">
+
+<div class="ant-row css-240cud" style="margin-left: -8px; margin-right: -8px;">
+            <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px; margin: 0 auto; text-align:center;">
+            <div class="header-title center">
+                <h2>Our Consultation Process</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="pdt50">
+        @if (steps != null && steps.Any())
+        {
+            <div class="stepper-container">
+                <div class="ant-row ant-row-center ant-row-middle stepper-row css-240cud">
+                    @foreach (var (step, index) in steps.Select((s, i) => (s, i)))
+                    {
+                        var title = step.Content.Value("stepTitle");
+                        var desc  = step.Content.Value("stepDescription");
+
+                        <div class="ant-col step-item ant-col-xs-24 ant-col-sm-12 ant-col-md-8 ant-col-lg-4">
+                            <div class="step-circle-container">
+                                @if (index > 0)
+                                {
+                                    <div class="dashline"></div>
+                                }
+                                <div class="step-circle">Step @(index + 1)</div>
+                            </div>
+                            <div class="header-title">
+                                <h5>@title</h5>
+                                <p class="step-description">@desc</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>No consultation steps added yet.</p>
+        }
+    </div>
+</div>

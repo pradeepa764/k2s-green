@@ -1,0 +1,85 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+
+Layout = "Master1.cshtml";
+    var solutions = Model.Children.Where(x => x.ContentType.Alias == "solutionBlogPost"); // child blog posts
+}
+
+@if (solutions != null && solutions.Any())
+{
+    <div class="ant-row pdt50 css-240cud" style="margin-left: -8px; margin-right: -8px; row-gap: 16px;">
+        @foreach (var item in solutions)
+        {
+            var title = item.Value<string>("blogTitle");
+            var image = item.Value<IPublishedContent>("blogImage");
+            var paragraph = item.Value<string>("Paragraph"); // description or content
+
+            <div class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8 ant-col-lg-8 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                <div class="solution-colbox">
+                    @if (image != null)
+                    {
+                        <div class="imgwrapper">
+                            <img src="@image.Url()" alt="@title" />
+                        </div>
+                    }
+                    <div class="header-title white">
+                        <h5>@title</h5>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(paragraph))
+                    {
+                        <div class="details-list offwhite minHeight">
+                            @if (paragraph.Contains("\n") || paragraph.Contains("<li>"))
+                            {
+                                @Html.Raw(paragraph)  <!-- allows <ul><li>…</li></ul> formatting -->
+                            }
+                            else
+                            {
+                                <p>@paragraph</p>
+                            }
+                        </div>
+                    }
+
+                    <a class="morebutton" href="@item.Url()">
+                        @linkTitle <i class="arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!-- Styles -->
+<style>
+.solution-colbox {
+    background: #293077;
+    padding: 24px;
+    border-radius: 8px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.solution-colbox .imgwrapper {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.solution-colbox .imgwrapper img {
+    max-width: 100%;
+    height: auto;
+}
+
+.solution-colbox .morebutton {
+    margin-top: auto;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.solution-colbox .morebutton i.arrow-right {
+    margin-left: 8px;
+}
+</style>

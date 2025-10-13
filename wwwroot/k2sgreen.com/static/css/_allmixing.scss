@@ -1,0 +1,55 @@
+@mixin reset-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+@mixin rounded-corner($arc) {
+    -moz-border-radius: $arc;
+    -webkit-border-radius: $arc;
+    border-radius: $arc;  
+}
+@mixin box-shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+       -moz-box-shadow: $shadow;       
+            box-shadow: $shadow;
+  }
+@mixin text-shadow($shadow) {
+-webkit-text-shadow: $shadow;
+    -moz-text-shadow: $shadow;       
+        text-shadow: $shadow;
+}
+  
+@mixin transform($param) {
+    -webkit-transform: $param;
+    -moz-transform: $param;
+    -o-transform: $param;
+    transform: $param;
+  }
+@mixin transition($param) {
+    -webkit-transition: $param;
+    -moz-transition: $param;
+    -o-transition: $param;
+    transition: $param;
+}
+
+@mixin button{
+  background: #cb0969;
+  border-radius: 0px;
+  color: #fff;
+  border: none;
+  line-height: 16px;
+  font-size: 16px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-align: left;
+  position: relative;
+  text-decoration: none;
+  padding: 0 20px;
+  font-weight: 300;
+  min-height: 50px;
+  margin-top: 10px;
+  display: flex;
+  height: auto;
+  align-items: center;
+  
+}

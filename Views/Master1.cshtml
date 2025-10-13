@@ -1,0 +1,90 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="@Url.Content("~/images/favicon.ico")" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app" />
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="@Url.Content("~/images/logo192.png")" />
+    <link rel="manifest" href="@Url.Content("~/manifest.json")" />
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" />
+
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+
+    <!-- React chunk CSS -->
+    <link rel="stylesheet" href="@Url.Content("~/css/2.551aa434.chunk.css")" />
+
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="@Url.Content("~/css/main1.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/css/style1.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/css/framework.css")" />
+
+    <link rel="stylesheet" href="@Url.Content("~/css/slick.css")" />
+        <link rel="stylesheet" href="@Url.Content("~/css/slick-theme.css")" />
+                <link rel="stylesheet" href="@Url.Content("~/css/k2sgreen.css")" />
+
+
+    <!-- jQuery + Slick -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+  <!-- Page-specific scripts -->
+
+    @RenderSection("Head", required: false)
+</head>
+
+<body data-aos-delay="0" data-aos-duration="800" data-aos-easing="ease">
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+
+ @await Html.PartialAsync("Navig")
+
+      <main>
+        @RenderBody()
+      </main>
+
+      @await Html.PartialAsync("Footerr")
+ 
+ <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+$(document).ready(function(){
+    var $slider = $('#service-slider');
+    if($slider.length && typeof $slider.slick === 'function'){
+        $slider.slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            infinite: true,
+            arrows: true,
+            dots: true,
+            centerMode: true
+        });
+    } else {
+        console.warn('Slider not initialized: container missing or Slick not loaded.');
+    }
+
+    // Initialize AOS
+    AOS.init({
+        duration: 1200,
+        once: true
+    });
+});
+
+// Ensure AOS triggers on load (for above-the-fold sections)
+$(window).on('load', function () {
+    AOS.refresh();
+});
+</script>
+
+
+   @RenderSection("Scripts", required: false)
+ 
+</body>
+</html>

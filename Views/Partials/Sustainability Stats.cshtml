@@ -1,0 +1,103 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+
+@{
+    var heading = Model.Value<string>("whyGreenTitle");
+    var description = Model.Value<string>("whyGreenDescription");
+    var statBlocks = Model.Value<IEnumerable<BlockListItem>>("sustainabilityStats");
+}
+
+<section class="why-green">
+    <div class="k2s-green-container defaultPadding">
+
+        <!-- Section Heading -->
+        <div class="header-title" data-aos="fade-up" data-aos-duration="1200">
+            @if (!string.IsNullOrWhiteSpace(heading))
+            {
+                <h2 class="title-center">@heading</h2>
+            }
+            @if (!string.IsNullOrWhiteSpace(description))
+            {
+                <p class="title-center">@Html.Raw(description)</p>
+            }
+        </div>
+
+        <!-- Stat Blocks -->
+        @if (statBlocks != null && statBlocks.Any())
+        {
+            <div class="ant-row pdt50">
+                @foreach (var item in statBlocks)
+                {
+                    var counter = item.Content.Value<string>("counter");
+                    var desc = item.Content.Value<string>("description");
+
+                    <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-sm-12 ant-col-md-8">
+                        <div class="columnStyle2 s1" data-aos="flip-left" data-aos-duration="1200">
+                            <div class="counter">@counter</div>
+                            <div class="description">@Html.Raw(desc)</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<style>
+    /* Ant Design inspired grid */
+    .ant-row {
+        display: flex;
+        flex-flow: row wrap;
+        margin-left: -8px;
+        margin-right: -8px;
+    }
+
+    .ant-col {
+        position: relative;
+        max-width: 100%;
+        min-height: 1px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    /* Responsive breakpoints */
+    .ant-col-xs-24 { flex: 0 0 100%; max-width: 100%; }
+    @@media (min-width: 576px) {
+        .ant-col-sm-12 { flex: 0 0 50%; max-width: 50%; }
+    }
+    @@media (min-width: 768px) {
+        .ant-col-md-8 { flex: 0 0 33.3333%; max-width: 33.3333%; }
+    }
+
+    /* Stat card style */
+    .columnStyle2 {
+        padding: 24px;
+        background: url('/static/media/gradient-bg.78e4d64e.png') no-repeat center center;
+        background-size: cover;
+        font-family: "F37 Ginger", sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 280px;
+        border-radius: 8px;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .columnStyle2 .counter {
+        font-size: 64px;
+        font-weight: 300;
+        margin-bottom: 16px;
+    }
+
+    .columnStyle2 .description {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.4;
+    }
+
+    a, button, div, input, select {
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+    }
+</style>

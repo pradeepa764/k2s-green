@@ -1,0 +1,90 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IPublishedContent>
+@{
+    Layout = "Master1.cshtml";
+
+    var title = Model.Value<string>("blogTitle");
+    var image = Model.Value<IPublishedContent>("blogImage");
+    var paragraph = Model.Value<string>("paragraph");
+}
+
+<section class="solution-single">
+    <div class="container">
+        <h1>@title</h1>
+
+        @if (image != null)
+        {
+            <div class="solution-image">
+                <img src="@image.Url()" alt="@title" />
+            </div>
+        }
+
+        <div class="solution-content">
+            @Html.Raw(paragraph)
+        </div>
+    </div>
+</section>
+<style>
+    /* Container for the section */
+.solution-single .container {
+    max-width: 1320px; /* responsive max width */
+    width: 100%;
+    margin: 0 auto; /* center horizontally */
+    padding: 100px 20px; /* top & bottom padding with horizontal spacing */
+    box-sizing: border-box;
+    font-family: "F37 Ginger", sans-serif;
+}
+
+/* Section heading */
+.solution-single h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* Image wrapper */
+.solution-image {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.solution-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* optional rounded corners */
+    display: inline-block;
+}
+
+/* Paragraph/content */
+.solution-content {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #333;
+}
+
+/* Responsive adjustments */
+@@media (max-width: 1024px) {
+    .solution-single h1 {
+        font-size: 30px;
+    }
+
+    .solution-content {
+        font-size: 16px;
+    }
+}
+
+@@media (max-width: 768px) {
+    .solution-single .container {
+        padding: 50px 15px;
+    }
+
+    .solution-single h1 {
+        font-size: 26px;
+    }
+
+    .solution-content {
+        font-size: 15px;
+    }
+}
+
+</style>

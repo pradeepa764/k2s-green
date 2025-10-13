@@ -1,0 +1,58 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BookingConsultation>
+
+<div class="landing-screen defaultPadding_fge">
+    <div class="k2s-green-container inner alltab">
+        
+        <!-- Title + Highlight -->
+        <div class="header-title center">
+        <h1>
+                @Model.Value("bookingTitle") 
+                <span style="color: rgb(203, 9, 105);">
+                    @Model.Value("headingHighlight")
+                </span>
+            </h1>
+        </div>
+
+        <!-- Hero Banner -->
+        <div class="image-wrapper" >
+            @{
+                var banner = Model.Value<IPublishedContent>("image"); // 👈 check alias
+                var bannerUrl = banner?.Url() ?? "";
+            }
+
+            @if (!string.IsNullOrWhiteSpace(bannerUrl))
+            {
+                <section class="hero">
+                    <img src="@bannerUrl" alt="Hero Banner" class="hero-banner" />
+                </section>
+            }
+            else
+            {
+                <p style="color:red;">⚠️ No image found (check alias in Umbraco)</p>
+            }
+        </div>
+
+        <!-- Two-column section -->
+        <div class="ant-row pdt50 css-240cud" style="margin-left: -8px; margin-right: -8px;">
+            
+            <!-- Left Column -->
+            <div class="ant-col ant-col-xs-24 ant-col-md-12" style="padding-left: 8px; padding-right: 8px;">
+                <div class="header-title">
+                    <h2>@Model.Value("introHeading")</h2>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+<div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px;">                
+                       <div class="header-title">
+                         <p>@Model.Value("introText")</p>
+                   <a class="morebutton consultant" href="/contact">
+                        Schedule a Consultation <i class="arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

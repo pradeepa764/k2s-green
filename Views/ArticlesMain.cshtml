@@ -1,0 +1,29 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ArticlesItem>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+    Layout = "Master.cshtml";
+
+    var title = Model.Value<string>("title");
+    var date = Model.Value<DateTime>("date");
+    var time = Model.Value<string>("time"); // Can also be DateTime depending on field
+    var body = Model.Value<string>("body");
+}
+<!-- Blogpost Container -->
+<div class="container">
+    <div class="row section">
+        <div class="col-md-12">
+            <h1 class="blog-title">@title</h1>
+            <div class="meta text-muted mb-4">
+                <strong>Published on:</strong> @date.ToString("MMMM dd, yyyy")
+                @if (!string.IsNullOrWhiteSpace(time))
+                {
+                    <span>at @time</span>
+                }
+            </div>
+            <div class="blog-content">
+                @Html.Raw(body)
+            </div>
+        </div>
+    </div>
+</div>

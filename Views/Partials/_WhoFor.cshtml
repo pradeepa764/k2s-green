@@ -1,0 +1,92 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+@{
+    var tabs = Model.Value<IEnumerable<BlockListItem>>("consultationTab");
+    var tabCount = tabs?.Count() ?? 0;
+}
+
+<div class="g-bb-white defaultPadding">
+    <div class="k2s-green-container consultant-service">
+        @if (tabs != null && tabs.Any())
+        {
+            <div class="k2s-green-container inner tab">
+                <!-- TAB HEADERS -->
+                <div class="customTabWrapper consultation">
+                    <ul class="tab-list tablength-@tabCount">
+                        @for (int i = 0; i < tabCount; i++)
+                        {
+                            var tab = tabs.ElementAt(i);
+                            var tabTitle = tab.Content.Value<string>("tabTitle");
+                            <li class="@(i == 0 ? "selected" : " ")" data-tab="tab-@i">@tabTitle</li>
+                        }
+                    </ul>
+                </div>
+
+                <!-- TAB CONTENT -->
+                <div class="tab-content">
+                    @for (int i = 0; i < tabCount; i++)
+                    {
+                        var tab = tabs.ElementAt(i);
+                        var tabTitle = tab.Content.Value<string>("tabTitle");
+                        var tabList = tab.Content.Value<string>("tabList");
+                        var tabImage = tab.Content.Value<IPublishedContent>("tabImage");
+
+                        <div id="tab-@i" class="aboutcontent @(i == 0 ? "selected" : "")">
+                            <div class="ant-row our_consultation css-240cud" style="margin-left: -8px; margin-right: -8px;">
+                                <!-- LEFT: TEXT -->
+                                <div class="ant-col textWrapper ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                                    <div class="flexbox column">
+                                        <div class="header-title black">
+                                            <h2>@tabTitle</h2>
+                                        </div>
+                                        <div class="listing">
+                                            <ul class="details-list gray">
+                                                @foreach (var line in tabList?.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries) ?? Enumerable.Empty<string>())
+                                                {
+                                                    <li>@line</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- RIGHT: IMAGE -->
+                                <div class="ant-col imageWrapper ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                                    @if (tabImage != null)
+                                    {
+                                        <img alt="@tabTitle" src="@tabImage.Url()" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+   
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabLinks = document.querySelectorAll(".customTabWrapper.consultation .tab-list li");
+        const tabContents = document.querySelectorAll(".tab-content .aboutcontent");
+
+        tabLinks.forEach((link, index) => {
+            link.addEventListener("click", function () {
+                // Remove "selected" from all tab links and contents
+                tabLinks.forEach(l => l.classList.remove("selected"));
+                tabContents.forEach(c => c.classList.remove("selected"));
+
+                // Add "selected" to clicked tab and matching content
+                this.classList.add("selected");
+                tabContents[index].classList.add("selected");
+            });
+        });
+    });
+</script>

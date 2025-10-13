@@ -1,0 +1,119 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+
+@{
+    var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+}
+
+@if (selection?.Length > 0)
+{
+    <div class="k2sgreen">
+        <div class="menu_wrapper headergray">
+            <div class="header k2s-green-container">
+                <!-- ✅ Logo -->
+                <a class="k2s-green_logo" title="K2S Green" href="@Model.Root().Url(PublishedUrlProvider)">
+                    K2S Green
+                </a>
+
+                <!-- ✅ Hamburger Icon -->
+                <div class="hamburgermenu_icon">
+                    <span role="img" aria-label="align-right" class="anticon anticon-align-right" style="font-size: 26px;">
+                        <svg class="hamburger" viewBox="64 64 896 896" focusable="false" data-icon="align-right" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                            <path d="M904 158H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 424H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 212H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0-424H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"></path>
+                        </svg>
+                    </span>
+                </div>
+
+                <!-- ✅ Navigation -->
+             
+                    <ul class="navigation">
+                        @foreach (var item in selection)
+                        {
+                            var isActive = item.IsAncestorOrSelf(Model);
+
+                            if (item.Name == "Contact")
+                            {
+                                <!-- Contact button inside ul -->
+                                <li class="buttonLink">
+                                    <a href="@item.Url(PublishedUrlProvider)" class="contact-btn">
+                                        Contact
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="@(isActive ? "current" : "")">
+                                    <a class="navlink" href="@item.Url(PublishedUrlProvider)">
+                                        @item.Name
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div> <!-- end header -->
+      <!-- end menu_wrapper -->
+    </div> <!-- end k2sgreen -->
+}
+
+
+
+<!-- ✅ Toggle Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const hamburger = document.querySelector(".hamburgermenu_icon");
+  const nav = document.querySelector(".navigation");
+
+  if (!nav) return;
+
+  // Function to set correct class for desktop/mobile
+  function updateNavClass() {
+    if (window.innerWidth > 992) {
+      nav.classList.add("fixed");   // desktop layout
+      nav.classList.remove("show"); // reset mobile toggle
+      document.body.classList.remove("menu-open");
+    } else {
+      nav.classList.remove("fixed"); // mobile default hidden
+    }
+  }
+
+  // Initial check and on resize
+  updateNavClass();
+  window.addEventListener("resize", updateNavClass);
+
+  // Hamburger toggle (mobile only)
+  if (hamburger) {
+    hamburger.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (window.innerWidth <= 992) {
+        nav.classList.toggle("fixed"); // toggle visibility
+        document.body.classList.toggle("menu-open"); // optional scroll lock
+      }
+    });
+
+    // Close menu when a link is clicked (mobile only)
+    nav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", function () {
+        if (window.innerWidth <= 992) {
+          nav.classList.remove("fixed");
+          document.body.classList.remove("menu-open");
+        }
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", function (e) {
+      if (window.innerWidth <= 992 && !nav.contains(e.target) && !hamburger.contains(e.target)) {
+        nav.classList.remove("fixed");
+        document.body.classList.remove("menu-open");
+      }
+    });
+  }
+});
+</script>

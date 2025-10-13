@@ -1,0 +1,39 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var title = Model.Value<string>("title");
+    var description = Model.Value<string>("description");
+    
+    var mainImage = Model.Value<IPublishedContent>("heroImage");
+    var backgroundImage = Model.Value<IPublishedContent>("backgroundImage");
+}
+
+<div class="future-green-energy">
+    <div class="k2s-green-container defaultPadding_fge">
+        <div class="future-green-energy-wrapper">
+            <div class="header-title white">
+                <h2>@title</h2>
+            </div>
+            
+            
+        </div>
+        <div class="image-wrapper">
+            <div class="newImg">
+                @if (mainImage != null)
+                {
+                    <img class="windMil"
+                         alt="@title"
+                         data-aos="fade-up"
+                         data-aos-duration="1000"
+                         src="@mainImage.Url()" />
+                }
+            </div>
+            @if (backgroundImage != null)
+            {
+                <img class="windMilbase"
+                     alt="@title"
+                     src="@backgroundImage.Url()" />
+            }
+        </div>
+    </div>
+</div>

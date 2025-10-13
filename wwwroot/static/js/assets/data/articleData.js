@@ -1,0 +1,27 @@
+const articleData = [{
+        id: 1,
+        slug: "future-of-renewable-energy",
+        image: "/images/new-article1.jpg",
+        date: "13th Feb, 2025",
+        title: "Future of Renewable Energy",
+        content: "<p>As per Delhi CM Arvind Kejriwal, the solar subsidy ​in ​Delhi can reduce the electricity bills of residential customers to zero. Residential customers can potentially earn Rs. 700 to Rs. 900 monthly by installing rooftop solar systems.</p><p>At the same time, Kejriwal claims commercial and industrial customers can save up to 50% on their electricity bills. The subsidy focuses on residential, commercial, and industrial customers. </p><p>Excess solar electricity generated in a month will be rolled over to the next month. This process will continue till the end of the financial year.</p><p>If you are a resident of Delhi and want to apply for the solar subsidy, read this blog to learn how to make a hassle-free application for it. </p><h3 class='mt50'>​Subsidy on Solar Panel in Delhi</h3><p>As per Delhi CM Arvind Kejriwal, the solar subsidy ​in ​Delhi can reduce the electricity bills of residential customers to zero. Residential customers can potentially earn Rs. 700 to Rs. 900 monthly by installing rooftop solar systems.</p><p>At the same time, Kejriwal claims commercial and industrial customers can save up to 50% on their electricity bills. The subsidy focuses on residential, commercial, and industrial customers. </p><p>Excess solar electricity generated in a month will be rolled over to the next month. This process will continue till the end of the financial year.</p><p>If you are a resident of Delhi and want to apply for the solar subsidy, read this blog to learn how to make a hassle-free application for it. </p>"
+    },
+    {
+        id: 2,
+        slug: "solar-panel-efficiency",
+        image: "/images/new-article3.jpg",
+        date: "14th Feb, 2025",
+        title: "Solar Panel Efficiency",
+        content: "<p>As per Delhi CM Arvind Kejriwal, the solar subsidy ​in ​Delhi can reduce the electricity bills of residential customers to zero. Residential customers can potentially earn Rs. 700 to Rs. 900 monthly by installing rooftop solar systems.</p><p>At the same time, Kejriwal claims commercial and industrial customers can save up to 50% on their electricity bills. The subsidy focuses on residential, commercial, and industrial customers. </p><p>Excess solar electricity generated in a month will be rolled over to the next month. This process will continue till the end of the financial year.</p><p>If you are a resident of Delhi and want to apply for the solar subsidy, read this blog to learn how to make a hassle-free application for it. </p><h3 class='mt50'>​Subsidy on Solar Panel in Delhi</h3><p>As per Delhi CM Arvind Kejriwal, the solar subsidy ​in ​Delhi can reduce the electricity bills of residential customers to zero. Residential customers can potentially earn Rs. 700 to Rs. 900 monthly by installing rooftop solar systems.</p><p>At the same time, Kejriwal claims commercial and industrial customers can save up to 50% on their electricity bills. The subsidy focuses on residential, commercial, and industrial customers. </p><p>Excess solar electricity generated in a month will be rolled over to the next month. This process will continue till the end of the financial year.</p><p>If you are a resident of Delhi and want to apply for the solar subsidy, read this blog to learn how to make a hassle-free application for it. </p>"
+    },
+    {
+        id: 3,
+        slug: "green-hydrogen-net-zero",
+        image: "/images/new-article3.jpg",
+        date: "15th Feb, 2025",
+        title: "Green Hydrogen’s Role in Net Zero",
+        content: "<p>As per Delhi CM Arvind Kejriwal, the solar subsidy ​in ​Delhi can reduce the electricity bills of residential customers to zero. Residential customers can potentially earn Rs. 700 to Rs. 900 monthly by installing rooftop solar systems.</p><p>At the same time, Kejriwal claims commercial and industrial customers can save up to 50% on their electricity bills. The subsidy focuses on residential, commercial, and industrial customers. </p><p>Excess solar electricity generated in a month will be rolled over to the next month. This process will continue till the end of the financial year.</p><p>If you are a resident of Delhi and want to apply for the solar subsidy, read this blog to learn how to make a hassle-free application for it. </p><h3 class='mt50'>​Subsidy on Solar Panel in Delhi</h3><p>As per Delhi CM Arvind Kejriwal, the solar subsidy ​in ​Delhi can reduce the electricity bills of residential customers to zero. Residential customers can potentially earn Rs. 700 to Rs. 900 monthly by installing rooftop solar systems.</p><p>At the same time, Kejriwal claims commercial and industrial customers can save up to 50% on their electricity bills. The subsidy focuses on residential, commercial, and industrial customers. </p><p>Excess solar electricity generated in a month will be rolled over to the next month. This process will continue till the end of the financial year.</p><p>If you are a resident of Delhi and want to apply for the solar subsidy, read this blog to learn how to make a hassle-free application for it. </p>"
+    },
+];
+
+export default articleData;

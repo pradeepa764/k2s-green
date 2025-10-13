@@ -1,0 +1,132 @@
+/* ========== Ant Design Icons ========== */
+.anticon {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  font-style: normal;
+  line-height: 0;
+  text-align: center;
+  text-transform: none;
+  vertical-align: -0.125em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.anticon > * {
+  line-height: 1;
+}
+
+.anticon svg {
+  display: inline-block;
+}
+
+.anticon::before {
+  display: none;
+}
+
+.anticon .anticon-icon {
+  display: block;
+}
+
+.anticon[tabindex] {
+  cursor: pointer;
+}
+
+.anticon-spin::before,
+.anticon-spin {
+  display: inline-block;
+  -webkit-animation: loadingCircle 1s infinite linear;
+  animation: loadingCircle 1s infinite linear;
+}
+
+@-webkit-keyframes loadingCircle {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+/* ========== Ant Design Base Styling ========== */
+a {
+  color: #1677ff;
+  text-decoration: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #69b1ff;
+  text-decoration: none;
+  outline: 0;
+}
+
+a:active {
+  color: #0958d9;
+}
+
+a[disabled] {
+  color: rgba(0, 0, 0, 0.25);
+  cursor: not-allowed;
+}
+
+/* ========== Ant Row Styling ========== */
+.ant-row {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-size: 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row wrap;
+  min-width: 0;
+}
+
+.ant-row::before,
+.ant-row::after {
+  display: flex;
+  box-sizing: border-box;
+}
+
+.ant-row-no-wrap {
+  flex-wrap: nowrap;
+}
+
+.ant-row-start {
+  justify-content: flex-start;
+}
+
+.ant-row-center {
+  justify-content: center;
+}
+
+.ant-row-end {
+  justify-content: flex-end;
+}
+
+.ant-row-space-between {
+  justify-content: space-between;
+}
+
+.ant-row-space-around {
+  justify-content: space-around;
+}
+
+.ant-row-space-evenly {
+  justify-content: space-evenly;
+}
+
+.ant-row-top {
+  align-items: flex-start;
+}
+
+.ant-row-middle {
+  align-items: center;
+}
+
+.ant-row-bottom {
+  align-items: flex-end;
+}
+
+        

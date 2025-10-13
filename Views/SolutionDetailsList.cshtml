@@ -1,0 +1,54 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SolutionDetailsList>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "Master1.cshtml";
+	    var solutionDetails = Model.ChildrenOfType("solutionDetails").ToList();
+    
+}
+<section class="solution-detail-list">
+    <div class="container">
+
+        @if (solutionDetails.Any())
+        {
+            <div class="ant-row" style="row-gap: 24px;">
+                @foreach (var detail in solutionDetails)
+                {
+                    var title = detail.Value<string>("blogTitle");
+                    var image = detail.Value<IPublishedContent>("blogImage");
+                    var paragraph = detail.Value<string>("paragraph");
+
+                    <div class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-6">
+                        <div class="solution-detail-card">
+
+                            @if (!string.IsNullOrEmpty(title))
+                            {
+                                <h3>@title</h3>
+                            }
+
+                            @if (image != null)
+                            {
+                                <div class="solution-image">
+                                    <img src="@image.Url()" alt="@title" />
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(paragraph))
+                            {
+                                <div class="solution-content">
+                                    @Html.Raw(paragraph)
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No solution details found.</p>
+        }
+
+    </div>
+</section>

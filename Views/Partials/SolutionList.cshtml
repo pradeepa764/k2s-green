@@ -1,0 +1,118 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+@{
+    // ----------------------
+    // 1️⃣ Solutions Block List
+    // ----------------------
+    var solutions = Model.Value<IEnumerable<BlockListItem>>("solutionList");
+    var sectionTitle = Model.Value<string>("solutionTitle");
+
+    // ----------------------
+    // 2️⃣ Latest Blog Posts
+    // ----------------------
+    var blogRoot = Umbraco.ContentAtRoot()
+        .DescendantsOrSelfOfType("solutions")
+        .FirstOrDefault()?
+        .ChildrenOfType("SolutionDetailsList")
+        .FirstOrDefault();
+
+    var articles = blogRoot?.ChildrenOfType("SolutionDetails")
+        .OrderByDescending(x => x.Value<DateTime?>("publishDate"))
+        .Take(4)
+        .ToList() ?? new List<IPublishedContent>();
+
+    string FormatDate(DateTime? date) => date?.ToString("dd MMM, yyyy") ?? "";
+}
+
+<div class="solutions">
+
+    <!-- Section Title -->
+    @if (!string.IsNullOrEmpty(sectionTitle))
+    {
+        <div class="ant-row pdt50 css-240cud" style="margin-left: -8px; margin-right: -8px;">
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-12 ant-col-md-offset-6 css-240cud" style="padding: 0 8px;">
+                <div class="header-title center">
+                    <h6 class="title-center">@sectionTitle</h6>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Solutions Grid -->
+    @if (solutions != null && solutions.Any())
+    {
+        <div class="ant-row solutions-grid pdt50 css-240cud">
+            @foreach (var item in solutions)
+            {
+                var image = item.Content.Value<IPublishedContent>("iconImage");
+                var title = item.Content.Value<string>("title");
+                var description = item.Content.Value<string>("description");
+                var linkPage = item.Content.Value<IPublishedContent>("ctaLink");
+                var linkText = item.Content.Value<string>("linkTitle");
+
+                <div class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8 css-240cud" style="padding: 0 8px;">
+                    <div class="solution-colbox">
+                        @if (image != null)
+                        {
+                            <div class="imgwrapper">
+                                <img src="@image.Url()" alt="@title" />
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(title))
+                        {
+                            <div class="header-title white">
+                                <h5>@title</h5>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(description))
+                        {
+                            <div class="details-list offwhite minHeight">
+                                <p>@description</p>
+                            </div>
+                        }
+                        @if (linkPage != null && !string.IsNullOrEmpty(linkText))
+                        {
+                            <a class="morebutton" href="@linkPage.Url()">
+                                @linkText <i class="arrow-right"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- Blog Posts Section -->
+    @if (articles.Any())
+    {
+        <div class="solution-blogs pdt50">
+            <div class="ant-row css-240cud" style="row-gap: 24px;">
+                @foreach (var post in articles)
+                {
+                    var title = post.Value<string>("solutionTitle");
+                    var image = post.Value<IPublishedContent>("solutionImage");
+                    var date = post.Value<DateTime?>("publishDate");
+                    var body = post.Value<string>("solutionBody");
+
+                    <div class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-6 css-240cud">
+                        <div class="solution-card">
+                            @if (image != null)
+                            {
+                                <img src="@image.Url()" alt="@title" />
+                            }
+                            <div class="solution-content">
+                                <h3><a href="@post.Url()">@title</a></h3>
+                                <span class="date">@FormatDate(date)</span>
+                                <p>@(body != null && body.Length > 120 ? body.Substring(0, 120) + "..." : body)</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+</style>

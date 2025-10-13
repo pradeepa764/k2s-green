@@ -1,0 +1,39 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var bannerImage = Model.Value<IPublishedContent>("bannerImage");
+    var bannerTitle = Model.Value<string>("bannerTitle") ?? "About Us";
+    var headingHighlight = Model.Value<string>("headingHighlight");
+    var mainHeading = Model.Value<string>("mainHeading") ?? "";
+    var mainText = Model.Value<string>("mainText") ?? "";
+    var bannerImageUrl = bannerImage?.Url() ?? Url.Content("~/images/bannerinner1.jpg");
+}
+
+<section class="landing-screen about defaultPaddingBanner">
+    <div class="k2s-green-container inner alltab">
+        <div class="header-title center" data-aos="fade-up">
+            <h1>
+                @bannerTitle
+                <span style="color: rgb(203, 9, 105);">@headingHighlight</span>
+            </h1>
+
+            <div class="image-wrapper">
+                <img src="@bannerImageUrl" alt="@bannerImage?.Name ?? "Banner Image"" style="width:100%; height:auto;" />
+            </div>
+<div data-aos="fade-up" data-aos-duration="2000" class="ant-row pdt50 css-240cud " style="margin-left: -8px; margin-right: -8px;">
+    <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-16 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                    <div class="header-title black left mb-60">
+                        @if (!string.IsNullOrWhiteSpace(mainHeading))
+                        {
+    <h2>@Html.Raw(mainHeading.Replace("<p>", "").Replace("</p>", ""))</h2>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(mainText))
+                        {
+                            <p class="lightblack">@Html.Raw(mainText)</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

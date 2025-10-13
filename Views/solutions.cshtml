@@ -1,0 +1,33 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Solutions>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "Master1.cshtml";
+}
+  
+<main>
+    <div class="landing-screen hydro defaultPadding">
+        <div class="k2s-green-container inner">
+            <div class="header-title center" data-aos="fade-up">
+<h1>
+    @Model.Value("headingPrefix") 
+    <span style="color: rgb(203, 9, 105);">
+        @Model.Value("headingHighlight")
+    </span>
+    
+</h1>            </div>
+            <div class="image-wrapper" data-aos="fade-down">
+@{
+    var img = Model.Value<IPublishedContent>("image");
+}
+<img src="@img?.Url()" alt="Solutions" />
+            </div>
+        </div>
+
+        @await Html.PartialAsync("Partials/SolutionList", Model)
+        @await Html.PartialAsync("Partials/WhyK2sGreen", Model)
+       
+
+            @await Html.PartialAsync("New Blog List")
+@await Html.PartialAsync("Stay Connected Section")
+</main>

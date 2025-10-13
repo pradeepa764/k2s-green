@@ -1,0 +1,30 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.PublishedContent;
+
+@{
+    Layout = "Master1.cshtml";
+
+    // Try to find Home page regardless of alias casing or nesting
+    var homeAliases = new[] { "Home", "home", "homePage" }; // add any possible aliases
+    var home = Umbraco.ContentAtRoot()
+                     .SelectMany(x => x.DescendantsOrSelf())
+                     .FirstOrDefault(x => homeAliases.Contains(x.ContentType.Alias, StringComparer.OrdinalIgnoreCase));
+}
+
+@if (home != null)
+{
+    <main>
+        @* Dynamically render all Home page sections/partials *@
+        @await Html.PartialAsync("Hero", home)
+        @await Html.PartialAsync("CleanEnergy", home)
+        @await Html.PartialAsync("Sustainability Stats", home)
+        @await Html.PartialAsync("FutureEnergy", home)
+        @await Html.PartialAsync("Solution", home)
+        @await Html.PartialAsync("SmartApproach", home)
+        @await Html.PartialAsync("New Blog List", home)
+    </main>
+}
+else
+{
+    <p>Home page content not found.</p>
+}

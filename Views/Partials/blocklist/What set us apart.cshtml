@@ -1,0 +1,44 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+@{
+    var sectionTitle = Model.Value<string>("sectionTitle");
+    var image = Model.Value<IPublishedContent>("sectionImage");
+    var items = Model.Value<IEnumerable<BlockListItem>>("sectionItems"); // If using block list
+
+}
+
+<div class="whatset-appart defaultPadding">
+    <div class="k2s-green-container">
+        <div class="ant-row ant-row-middle flexbox wd70">
+            <div class="ant-col flexbox-left blue ant-col-xs-24 ant-col-md-12">
+                <div class="img_stay_connected">
+                    @if (image != null)
+                    {
+                        <img src="@image.Url()" alt="@sectionTitle" />
+                    }
+                </div>
+            </div>
+            <div class="ant-col flexbox-right white ant-col-xs-24 ant-col-md-12">
+                <div class="whatset">
+                    <div class="header-title">
+                        <h3>@sectionTitle</h3>
+                    </div>
+                    @if (items != null && items.Any())
+                    {
+                        <ul class="whatset-appart-list">
+                            @foreach (var item in items)
+                            {
+                                <li>
+                                    <strong>@item.Content.Value("itemTitle")</strong> – @Html.Raw(item.Content.Value("itemDescription"))
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

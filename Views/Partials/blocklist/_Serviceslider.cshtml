@@ -1,0 +1,68 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+<div class="energy_solutions defaultPadding g-bb-white">
+    <div class="k2s-green-container">
+        <div class="ant-row css-240cud">
+            <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px; margin: 0 auto; text-align:center;">
+                <div class="header-title black center">
+                    <h2>@Model.Value("sliderTitle")</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="adaptive-container
+        <!-- Slick slider -->
+        <div class="slick-slider" id="service-slider">
+            @foreach (var slide in Model.Value<IEnumerable<BlockListItem>>("serviceSlides"))
+            {
+                var img = slide.Content.Value<IPublishedContent>("Image");
+                <div class="slideContainer">
+                    <div class="slideWrapper" style="background-image:url('@img?.Url()')">
+                        <div class="alt-tag">@slide.Content.Value("Title")</div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Custom navigation -->
+        <div class="custom-nav-buttons">
+            <button class="custom-prev"></button>
+            <button class="custom-next"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+
+
+</style>
+
+<script>
+    $('#service-slider').slick({
+    slidesToShow: 3,       // default desktop
+    slidesToScroll: 1,
+    infinite: true,
+    dots: false,
+    arrows: true,
+    prevArrow: $('.custom-prev'),
+    nextArrow: $('.custom-next'),
+    responsive: [
+        {
+            breakpoint: 1200, // large tablets
+            settings: { slidesToShow: 3 }
+        },
+        {
+            breakpoint: 992, // tablets
+            settings: { slidesToShow: 2 }
+        },
+        {
+            breakpoint: 576, // mobile
+            settings: { slidesToShow: 1 }
+        }
+    ]
+});
+
+</script>

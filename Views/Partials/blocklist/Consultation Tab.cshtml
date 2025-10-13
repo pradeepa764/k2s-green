@@ -1,0 +1,75 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BookingConsultation>
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+
+<div class="k2s-green-container consultant-service">
+    <div class="ant-row css-240cud" style="margin-left: -8px; margin-right: -8px;">
+        <div class="ant-col ant-col-xs-24 ant-col-md-12 ant-col-md-offset-6 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+            <div class="header-title center">
+                <h2>Who Is Our Consultation Service For?</h2>
+                <p class="pdt20">Our services are designed for anyone ready to take control of their energy future:</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="pdt50 alltab">
+        <div class="k2s-green-container inner tab">
+            @{
+                var tabs = Model.Value<IEnumerable<BlockListItem>>("consultationServiceTabs");
+                if (tabs != null && tabs.Any())
+                {
+                    var index = 0;
+            }
+            <div class="customTabWrapper consultation">
+                <ul class="tab-list tablength-@tabs.Count()">
+                    @foreach (var tab in tabs)
+                    {
+                        <li class="@(index == 0 ? "selected" : "")">@tab.Content.Value("tabTitle")</li>
+                        index++;
+                    }
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                @{
+                    index = 0;
+                }
+                @foreach (var tab in tabs)
+                {
+                    var tabContent = tab.Content;
+                    var image = tabContent.Value<IPublishedContent>("tabImage");
+                    var imgUrl = image?.Url() ?? "";
+                    var points = tabContent.Value<string>("tabList")?.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+
+                    <div class="ant-row our_consultation css-240cud @(index == 0 ? "active" : "")" style="margin-left: -8px; margin-right: -8px;">
+                        <div class="ant-col textWrapper ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                            <div class="flexbox column">
+                                <div class="header-title">
+                                    <h4 class="black">@tabContent.Value("tabTitle")</h4>
+                                </div>
+                                <div class="listing">
+                                    <ul class="details-list gray">
+                                        @foreach (var point in points)
+                                        {
+                                            <li>@point</li>
+                                        }
+                                    </ul>
+                                    <a class="morebutton consultant" href="/contact">Schedule a Consultation <i class="arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ant-col imageWrapper ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                            @if (!string.IsNullOrWhiteSpace(imgUrl))
+                            {
+                                <img src="@imgUrl" alt="@tabContent.Value("tabTitle")" />
+                            }
+                        </div>
+                    </div>
+                    index++;
+                }
+            </div>
+            }
+        </div>
+    </div>
+</div>
+

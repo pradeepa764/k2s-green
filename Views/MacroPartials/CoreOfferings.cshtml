@@ -1,0 +1,27 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models.Blocks
+
+@{
+    var offerings = Model.Content.Value<BlockListModel>("coreOfferings");
+}
+
+@if (offerings != null)
+{
+    <div class="core-offering">
+        <div class="k2s-green-container defaultPadding">
+            <div class="slick-slider carousel-lists">
+                @foreach (var item in offerings)
+                {
+                    var image = item.Content.Value<IPublishedContent>("offeringImage");
+                    var imageUrl = image?.Url() ?? "/images/default.jpg";
+                    <article class="carousel-item">
+                        <div class="img-wrapper">
+                            <img src="@imageUrl" alt="@item.Content.Value("offeringTitle")" />
+                        </div>
+                        <p class="f32">@item.Content.Value("offeringTitle")</p>
+                    </article>
+                }
+            </div>
+        </div>
+    </div>
+}

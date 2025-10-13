@@ -1,0 +1,44 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    var image = Model.Value<IPublishedContent>("missionImage");
+    var missionTitle = Model.Value<string>("missionTitle");
+    var missionText = Model.Value<string>("missionText");
+}
+
+<div class="clean-energy">
+    <div class="k2s-green-container defaultPadding">
+
+        <!-- Top Section -->
+        <div class="ant-row ant-row-middle pdt50" style="margin-left:-8px; margin-right:-8px;">
+            
+            <!-- Left: Mission Image -->
+            <div class="ant-col gutter-row coltype clean-energy-left ant-col-xs-24 ant-col-md-12" style="padding-left:8px; padding-right:8px;">
+                @if (image != null)
+                {
+                    <img src="@image.Url()" alt="@missionTitle" />
+                }
+            </div>
+
+            <!-- Right: Mission Title + Text -->
+            <div class="ant-col gutter-row coltype clean-energy-right ant-col-xs-24 ant-col-md-12" style="padding-left:8px; padding-right:8px;">
+                <div class="header-title white">
+                    <div class="mission-right">
+                     @if (!string.IsNullOrWhiteSpace(missionTitle))
+{
+    <h1>@Html.Raw(missionTitle.Replace("<p>", "").Replace("</p>", ""))</h1>
+}
+
+                        @if (!string.IsNullOrWhiteSpace(missionText))
+                        {
+                            <p>@Html.Raw(missionText)</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Render Mission Points Partial -->
+        @await Html.PartialAsync("Partials/BlockList/Mission Points")
+
+    </div>
+</div>

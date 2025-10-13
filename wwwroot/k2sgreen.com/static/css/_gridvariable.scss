@@ -1,0 +1,63 @@
+$grid-breakpoints: (
+    xs: 360,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+// Mixin for Media Query (Minimum Width)
+@mixin media-breakpoint-up($breakpoint) {
+  @if map-has-key($grid-breakpoints, $breakpoint) {
+    @media (min-width: #{map-get($grid-breakpoints, $breakpoint)}) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint #{$breakpoint} not found in $grid-breakpoints map.";
+  }
+}
+@mixin media-breakpoint-down($breakpoint) {
+    @if map-has-key($grid-breakpoints, $breakpoint) {
+      @media (max-width: #{map-get($grid-breakpoints, $breakpoint)}) {
+        @content;
+      }
+    } @else {
+      @warn "Breakpoint #{$breakpoint} not found in $grid-breakpoints map.";
+    }
+  }
+
+// .custom-class {
+//   display: none; // Hidden by default
+
+//   @include media-breakpoint-up(sm) {
+//     display: block; // Show on screens ≥ 576px
+//   }
+// }
+
+.container {
+    width: 100%;
+    margin: 0px auto;
+    @include media-breakpoint-up(xs) {
+        max-width: 320px;
+      }
+    @include media-breakpoint-up(sm) {
+      max-width: 540px;
+    }
+  
+    @include media-breakpoint-up(md) {
+        max-width: 720px;
+    }
+  
+    @include media-breakpoint-up(lg) {
+        max-width: 960px;
+    }
+  
+    @include media-breakpoint-up(xl) {
+        max-width: 1140px;
+    }
+  
+    @include media-breakpoint-up(xxl) {
+        max-width: 1320px;
+    }
+  }
+
