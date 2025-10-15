@@ -53,5 +53,17 @@
     transform: rotate(360deg);
   }
 }
+.ant-row {
+  display: flex;
+  flex-wrap: wrap !important;
+}
 
+/* Mobile fix: make each column full width */
+@media (max-width: 768px) {
+  .ant-col,
+  .ant-col-xs-24 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+}
         
