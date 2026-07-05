@@ -1,26 +1,24 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.AboutUs>
-    @using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.Blocks
 
-    @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
-    @{
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
     Layout = "Master1.cshtml";
-    }
+}
 
 
 
-    <main>
-     @await Html.PartialAsync("AboutBanner")
-               @await Html.PartialAsync("blocklist/AboutTabs")
-               @await Html.PartialAsync("MissionSection")
+@await Html.PartialAsync("AboutBanner")
+
+@await Html.PartialAsync("MissionSection")
 @await Html.PartialAsync("blocklist/CoreOfferings")
 @await Html.PartialAsync("blocklist/What set us apart")
 @await Html.PartialAsync("blocklist/Impact Item")
-@await Html.PartialAsync("blocklist/Smart  Slide Approach")
+@await Html.PartialAsync("blocklist/SmartSlideApproach")
 @await Html.PartialAsync("New Blog List")
+@await Html.PartialAsync("Partials/Stay Connected Section", Model)
 
-</main>
 
 
-           
 
-    
+

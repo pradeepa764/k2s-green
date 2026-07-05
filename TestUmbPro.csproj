@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -6,18 +6,31 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms" Version="13.6.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
     <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
+    <PackageReference Include="Umbraco.Cms" Version="13.6.0" />
     <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="72.1.0.3" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="NewFolder1\" />
+    <Folder Include="NewFolder2\" />
+    <Folder Include="NewFolder3\" />
+    <Folder Include="NewFolder4\" />
+    <Folder Include="NewFolder5\" />
+    <Folder Include="NewFolder6\NewFolder\" />
+    <Folder Include="Notifications\NewFolder1\" />
+    <Folder Include="Notifications\NewFolder2\" />
+    <Folder Include="Notifications\NewFolder3\" />
+    <Folder Include="Notifications\NewFolder4\" />
+    <Folder Include="Notifications\NewFolder5\" />
+    <Folder Include="Notifications\NewFolder\" />
+    <Folder Include="Services\NewFolder1\" />
+    <Folder Include="Services\NewFolder\" />
+    <Folder Include="wwwroot\App_Plugins\NewFolder\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\NewFolder1\" />
+    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -27,8 +40,13 @@
 
   <PropertyGroup>
     <!-- Remove RazorCompileOnBuild and RazorCompileOnPublish when not using ModelsMode InMemoryAuto -->
-    <RazorCompileOnBuild>false</RazorCompileOnBuild>
-    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+	  <RazorCompileOnBuild>false</RazorCompileOnBuild>
+	  <RazorCompileOnPublish>false</RazorCompileOnPublish>
   </PropertyGroup>
+
+  <!-- Add this ItemGroup to include the JSON in publish -->
+  <ItemGroup>
+    <None Include="appsettings-schema.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
 
 </Project>

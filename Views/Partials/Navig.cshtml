@@ -8,64 +8,55 @@
 @inject IPublishedUrlProvider PublishedUrlProvider
 
 @{
-    var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+    var selection = Model.Root()
+        .Children()
+        .Where(x => x.IsVisible(PublishedValueFallback))
+        .ToArray();
 }
 
 @if (selection?.Length > 0)
 {
     <div class="k2sgreen">
-        <div class="menu_wrapper headergray">
+        <div class="menu_wrapper headergray" id="siteHeader">
             <div class="header k2s-green-container">
-                <!-- ✅ Logo -->
-                <a class="k2s-green_logo" title="K2S Green" href="@Model.Root().Url(PublishedUrlProvider)">
+
+                <a class="k2s-green_logo" href="@Model.Root().Url(PublishedUrlProvider)">
                     K2S Green
                 </a>
 
-                <!-- ✅ Hamburger Icon -->
-                <div class="hamburgermenu_icon">
-                    <span role="img" aria-label="align-right" class="anticon anticon-align-right" style="font-size: 26px;">
-                        <svg class="hamburger" viewBox="64 64 896 896" focusable="false" data-icon="align-right" width="1em" height="1em" fill="currentColor" aria-hidden="true">
-                            <path d="M904 158H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 424H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 212H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0-424H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"></path>
-                        </svg>
-                    </span>
-                </div>
+                <div class="hamburgermenu_icon"><span role="img" aria-label="align-right" class="anticon anticon-align-right" style="font-size: 26px;"><svg viewBox="64 64 896 896" focusable="false" data-icon="align-right" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M904 158H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 424H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h496c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 212H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0-424H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"></path></svg></span></div>
 
-                <!-- ✅ Navigation -->
-             
-                    <ul class="navigation">
-                        @foreach (var item in selection)
+                <ul class="navigation">
+                    @foreach (var item in selection)
+                    {
+                        var active = item.IsAncestorOrSelf(Model) ? "current" : "";
+
+                        if (item.Name == "Contact")
                         {
-                            var isActive = item.IsAncestorOrSelf(Model);
-
-                            if (item.Name == "Contact")
-                            {
-                                <!-- Contact button inside ul -->
-                                <li class="buttonLink">
-                                    <a href="@item.Url(PublishedUrlProvider)" class="contact-btn">
-                                        Contact
-                                    </a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="@(isActive ? "current" : "")">
-                                    <a class="navlink" href="@item.Url(PublishedUrlProvider)">
-                                        @item.Name
-                                    </a>
-                                </li>
-                            }
+                            <li class="buttonLink">
+                                <a class="contact-btn" href="@item.Url(PublishedUrlProvider)">
+                                    Contact
+                                </a>
+                            </li>
                         }
-                    </ul>
-                </div>
-            </div> <!-- end header -->
-      <!-- end menu_wrapper -->
-    </div> <!-- end k2sgreen -->
+                        else
+                        {
+                            <li class="@active">
+                                <a class="navlink" href="@item.Url(PublishedUrlProvider)">
+                                    @item.Name
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+
+            </div>
+        </div>
+    </div>
 }
-
-
-
-<!-- ✅ Toggle Script -->
 <script>
+<!-- ✅ Toggle Script -->
+
 document.addEventListener("DOMContentLoaded", function () {
   const hamburger = document.querySelector(".hamburgermenu_icon");
   const nav = document.querySelector(".navigation");
@@ -116,4 +107,54 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const header = document.querySelector(".menu_wrapper");
+    if (!header) return;
+
+    let lastScrollTop = 0;
+
+    window.addEventListener("scroll", function () {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // scrolling UP
+        if (scrollTop < lastScrollTop && scrollTop > 100) {
+            header.classList.add("fixedh");
+        } 
+        // scrolling DOWN or at top
+        else {
+            header.classList.remove("fixedh");
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+});
+
+
+
 </script>
+<style>
+    .menu_wrapper.fixedh {
+    width: 100%;
+    transition: all .5s;
+    position: fixed;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+    animation: slide-down .7s;
+    opacity: 1;
+    z-index: 999;
+    top: 0;
+    background: #fff;
+}
+
+.menu_wrapper {
+    width: 100%;
+}
+
+.headergray {
+    background: #e9eaf5;
+}
+
+</style>

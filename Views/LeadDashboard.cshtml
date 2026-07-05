@@ -1,0 +1,64 @@
+﻿
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>
+
+@{
+    Layout = "Master.cshtml";
+    var leadId = Model.Id; // assumes this is a Lead node
+}
+
+<h2>Lead Audit Trail</h2>
+<table id="auditTable" border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Action</th>
+            <th>Old Status</th>
+            <th>New Status</th>
+            <th>Changed By</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    async function loadAuditTrail() {
+        try {
+            const leadId = @Model.Id;
+            const response = await fetch(`/api/leads/${leadId}/audits`);
+
+            if (!response.ok) {
+                throw new Error("Failed to load audit data");
+            }
+
+            const audits = await response.json();
+            const tbody = document.querySelector("#auditTable tbody");
+            tbody.innerHTML = "";
+
+            if (audits.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='6'>No audit records found</td></tr>";
+                return;
+            }
+
+            audits.forEach(a => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${a.timestamp ? new Date(a.timestamp).toLocaleString() : ""}</td>
+                    <td>${a.action || ""}</td>
+                    <td>${a.oldStatus || ""}</td>
+                    <td>${a.newStatus || ""}</td>
+                    <td>${a.changedBy || ""}</td>
+                    <td>${a.details || ""}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+        } catch (error) {
+            console.error(error);
+            document.querySelector("#auditTable tbody").innerHTML =
+                "<tr><td colspan='6'>Error loading audit data</td></tr>";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadAuditTrail);
+</script>

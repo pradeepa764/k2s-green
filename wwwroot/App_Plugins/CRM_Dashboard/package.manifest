@@ -1,0 +1,15 @@
+﻿{
+  "dashboards": [
+    {
+      "alias": "crmDashboard",
+      "view": "/App_Plugins/CRM_Dashboard/dashboard.html",
+      "sections": [ "content" ],
+      "weight": 10
+    }
+  ],
+
+  "javascript": [
+    "/App_Plugins/CRM_Dashboard/dashboard.controller.js"
+    
+  ]
+}

@@ -1,0 +1,23 @@
+﻿<div ng-controller="CrmAuditController as vm" style="padding:20px">
+
+    <h3>Audit Trail</h3>
+
+    <button class="btn btn-primary" ng-click="vm.createAudit()">
+        Create Audit
+    </button>
+
+    <br /><br />
+
+    <div ng-if="!vm.audits.length">
+        No audit records found.
+    </div>
+
+    <ul>
+        <li ng-repeat="audit in vm.audits">
+            {{audit.timestamp | date:'dd-MM-yyyy HH:mm'}} -
+            {{audit.oldStatus}} → {{audit.newStatus}}
+            by {{audit.changedBy}}
+        </li>
+    </ul>
+
+</div>

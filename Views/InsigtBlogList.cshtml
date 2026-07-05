@@ -1,65 +1,126 @@
-﻿
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Extensions
 
 @{
     Layout = "Master1.cshtml";
 }
 
 <style>
-    .blog-section {
-        width: 100vw;
-        margin-left: calc(-50vw + 50%);
-        background-color: #ffffff;
-        padding: 4rem 5vw;
-        box-sizing: border-box;
-    }
-
-    .blog-title {
-        text-align: center;
-        font-size: 3rem;
-        margin-bottom: 3rem;
-        color: #2c3e50;
-    }
-
-    .blog-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-        gap: 2.5rem;
-    }
-
-    .blog-item {
-        background-color: #f7f7f7;
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-        display: flex;
-        flex-direction: column;
-        height: 100
-
-
-<h1>@Model.Value("title")</h1>
-
-@if (Model.Children().Any())
-{
-    <div class="blog-list">
-        @foreach (var blog in Model.Children().Where(x => x.ContentType.Alias == "insightBlogPost"))
-        {
-            var blogImage = blog.Value<IPublishedContent>("image"); // Corrected here
-
-            <div class="blog-item">
-                <h2><a href="@blog.Url()">@blog.Value("title")</a></h2>
-
-               
-
-                @if (blogImage != null)
-                {
-                    <img src="@blogImage.Url()" alt="@blog.Name()" class="blog-image" />
-                }
-
-                <div class="blog-body">
-                    @Html.Raw(blog.Value("body"))
-                </div>
-            </div>
-        }
-    </div>
+/* FULL WIDTH SECTION */
+.blog-section {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    background-color: #ffffff;
+    padding: 4rem 5vw;
+    box-sizing: border-box;
 }
+
+/* TITLE */
+.blog-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    color: #2c3e50;
+}
+
+/* GRID */
+.blog-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2.5rem;
+}
+
+/* CARD */
+.blog-item {
+    background-color: #f7f7f7;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* IMAGE */
+.blog-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* TITLE LINK */
+.blog-item h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.blog-item h2 a {
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+.blog-item h2 a:hover {
+    color: #cb0969;
+}
+
+/* BODY */
+.blog-body {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+    .blog-title {
+        font-size: 2.2rem;
+    }
+}
+</style>
+
+<section class="blog-section">
+
+    <h1 class="blog-title">@Model.Value("title")</h1>
+
+    @if (Model.Children().Any())
+    {
+        <div class="blog-list">
+
+            @foreach (var blog in Model.Children()
+                .Where(x => x.ContentType.Alias == "insightBlogPost"))
+            {
+                var blogImage = blog.Value<IPublishedContent>("image");
+                var bodyText = blog.Value<string>("body")
+                    ?.StripHtml()
+                    .Truncate(160);
+
+                <div class="blog-item">
+
+                    @if (blogImage != null)
+                    {
+                        <img src="@blogImage.Url()"
+                             alt="@blog.Value("title")"
+                             class="blog-image" />
+                    }
+
+                    <h2>
+                        <a href="@blog.Url()">@blog.Value("title")</a>
+                    </h2>
+
+                    <div class="blog-body">
+                        @bodyText
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <p>No blog posts available.</p>
+    }
+
+</section>

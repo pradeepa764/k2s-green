@@ -1,39 +1,214 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
 
 @{
+    /* ===== Banner fields ===== */
     var bannerImage = Model.Value<IPublishedContent>("bannerImage");
     var bannerTitle = Model.Value<string>("bannerTitle") ?? "About Us";
     var headingHighlight = Model.Value<string>("headingHighlight");
     var mainHeading = Model.Value<string>("mainHeading") ?? "";
     var mainText = Model.Value<string>("mainText") ?? "";
-    var bannerImageUrl = bannerImage?.Url() ?? Url.Content("~/images/bannerinner1.jpg");
+    var bannerImageUrl = bannerImage?.Url() ?? Url.Content("~/images/banner-inner1.jpg");
+
+    /* ===== Tabs fields ===== */
+    var aboutTabs = Model.Value<IEnumerable<BlockListItem>>("aboutTabs") ?? Enumerable.Empty<BlockListItem>();
+    var tabCount = aboutTabs.Count();
 }
 
-<section class="landing-screen about defaultPaddingBanner">
+<div class="landing-screen about defaultPaddingBanner">
     <div class="k2s-green-container inner alltab">
-        <div class="header-title center" data-aos="fade-up">
-            <h1>
-                @bannerTitle
-                <span style="color: rgb(203, 9, 105);">@headingHighlight</span>
-            </h1>
-
-            <div class="image-wrapper">
-                <img src="@bannerImageUrl" alt="@bannerImage?.Name ?? "Banner Image"" style="width:100%; height:auto;" />
+        <!-- Banner -->
+        <div>
+            <div class="header-title center" data-aos="fade-up" data-aos-duration="2000">
+                <h1>
+                    @bannerTitle
+                    @if (!string.IsNullOrWhiteSpace(headingHighlight))
+                    {
+                        <span style="color:#cb0969;">@headingHighlight</span>
+                    }
+                </h1>
             </div>
-<div data-aos="fade-up" data-aos-duration="2000" class="ant-row pdt50 css-240cud " style="margin-left: -8px; margin-right: -8px;">
-    <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-16 css-240cud" style="padding-left: 8px; padding-right: 8px;">
-                    <div class="header-title black left mb-60">
-                        @if (!string.IsNullOrWhiteSpace(mainHeading))
-                        {
-    <h2>@Html.Raw(mainHeading.Replace("<p>", "").Replace("</p>", ""))</h2>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(mainText))
-                        {
-                            <p class="lightblack">@Html.Raw(mainText)</p>
-                        }
-                    </div>
+
+            <div class="image-wrapper" data-aos="fade-down" data-aos-duration="2000">
+                <img src="@bannerImageUrl" alt="@(bannerImage?.Name ?? "Banner Image")" style="width:100%;height:auto;" />
+            </div>
+        </div>
+
+        <!-- Main Heading & Text -->
+        <div class="ant-row pdt50 css-240cud" data-aos="fade-up" data-aos-duration="2000" style="margin-left:-8px;margin-right:-8px;">
+            <div class="ant-col gutter-row ant-col-xs-24 ant-col-md-16 css-240cud" style="padding-left:8px;padding-right:8px;">
+                <div class="header-title black left mb-60">
+                    @if (!string.IsNullOrWhiteSpace(mainHeading))
+                    {
+                        <h2>@Html.Raw(mainHeading.Replace("<p>", "").Replace("</p>", ""))</h2>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(mainText))
+                    {
+                        <p class="lightblack">@Html.Raw(mainText)</p>
+                    }
                 </div>
             </div>
         </div>
     </div>
-</section>
+
+    <!-- Tabs -->
+    <div class="k2s-green-container inner tab">
+        <div class="customTabWrapper about">
+            <ul class="tab-list tablength-@tabCount">
+                @for (int i = 0; i < tabCount; i++)
+                {
+                    var listTitle = aboutTabs.ElementAt(i).Content.Value<string>("title");
+                    <li class="@(i == 0 ? "selected" : "")">@listTitle</li>
+                }
+            </ul>
+        </div>
+
+        <div class="tab-content">
+            @for (int i = 0; i < tabCount; i++)
+            {
+                var tab = aboutTabs.ElementAt(i);
+                var heading = tab.Content.Value<string>("title");
+                var text = tab.Content.Value<string>("description");
+                var image = tab.Content.Value<IPublishedContent>("image");
+
+                <div class="aboutcontent @(i == 0 ? "active" : "hidden")">
+                    <div class="header-title black flexstyle">
+                        <h4>@heading</h4>
+                        <p class="lightblack">@Html.Raw(text)</p>
+                    </div>
+
+                    <div class="about-img-wrapper">
+                        @if (image != null)
+                        {
+                            <img src="@image.Url()" alt="@heading" style="width:100%;" />
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll(".tab-list li");
+    const tabContents = document.querySelectorAll(".tab-content .aboutcontent");
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener("click", function () {
+            // Remove "selected" from all tabs
+            tabs.forEach(t => t.classList.remove("selected"));
+            // Add "selected" to clicked tab
+            tab.classList.add("selected");
+
+            // Hide all tab contents
+            tabContents.forEach(tc => tc.classList.add("hidden"));
+            tabContents.forEach(tc => tc.classList.remove("active"));
+
+            // Show clicked tab content
+            tabContents[index].classList.remove("hidden");
+            tabContents[index].classList.add("active");
+        });
+    });
+});
+</script>
+<style>
+.header-title h2 {
+    font-size: 56px;
+    font-weight: 300;
+    font-family: "F37 Ginger";
+    line-height: 66px;
+    margin: 0 0 16px;
+    max-width:800px;
+}
+   
+.tab-content .aboutcontent.hidden {
+    display: none;
+}
+
+
+.tab-content .aboutcontent .flexstyle {
+    background: #fff;
+    padding: 44px;
+    width: 510px;         /* fixed width */
+    min-width: 510px;
+    max-width: 510px;
+    flex-direction: column;
+    margin: 0;
+    box-sizing: border-box;
+}
+.tab-content .about-img-wrapper {
+    width: 780px;         /* same width as text box */
+    min-width: 780px;
+    max-width: 780px;
+    flex-shrink: 0;       /* prevents shrinking */
+}
+.tab-content .aboutcontent, .tab-content .aboutcontent .flexstyle {
+ display:flex;
+    justify-content: space-between;
+}
+.tab-content .aboutcontent {
+  
+    justify-content: space-between;
+    gap: 40px; /* 👈 controls space between text & image */
+}
+
+
+.tab-content .header-title p.lightblack {
+    color: rgba(23, 28, 77, .64);
+}
+
+.tab-content .header-title  {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 32px;
+    margin: 0;
+    font-family: "F37 Ginger";
+} 
+
+@@media (max-width: 640px) {
+    .header-title h2 {
+        font-size: 36px;
+        line-height: 40px;
+    }
+}
+
+
+
+@@media (max-width: 767px) {
+
+    /* Stack text and image vertically */
+    .tab-content .aboutcontent {
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 24px;
+    }
+
+    /* Text block full width + spacing */
+    .tab-content .aboutcontent .flexstyle {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 14px;        /* space between title & paragraph */
+        padding: 24px;
+    }
+
+    /* Image full width */
+    .tab-content .about-img-wrapper img {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Prevent banner styles affecting tab content */
+    .tab-content .header-title {
+        margin: 0;
+        width: 100%;
+        font-size: 18px;
+    }
+}
+
+    
+   </style>

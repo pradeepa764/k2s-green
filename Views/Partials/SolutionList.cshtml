@@ -1,6 +1,8 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Models
+
 
 @{
     // ----------------------
@@ -32,9 +34,9 @@
     @if (!string.IsNullOrEmpty(sectionTitle))
     {
         <div class="ant-row pdt50 css-240cud" style="margin-left: -8px; margin-right: -8px;">
-            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-12 ant-col-md-offset-6 css-240cud" style="padding: 0 8px;">
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-xs-offset-0 ant-col-md-12 ant-col-md-offset-6 css-240cud" style="padding-left: 8px; padding-right: 8px;">
                 <div class="header-title center">
-                    <h6 class="title-center">@sectionTitle</h6>
+                    <h6 class="lightblack">@sectionTitle</h6>
                 </div>
             </div>
         </div>
@@ -43,14 +45,19 @@
     <!-- Solutions Grid -->
     @if (solutions != null && solutions.Any())
     {
-        <div class="ant-row solutions-grid pdt50 css-240cud">
+<div class="ant-row solutions-grid  css-240cud"
+     style="margin-left:-8px; margin-right:-8px; row-gap:16px;">
             @foreach (var item in solutions)
             {
                 var image = item.Content.Value<IPublishedContent>("iconImage");
                 var title = item.Content.Value<string>("title");
                 var description = item.Content.Value<string>("description");
-                var linkPage = item.Content.Value<IPublishedContent>("ctaLink");
-                var linkText = item.Content.Value<string>("linkTitle");
+
+       var links = item.Content.Value<IEnumerable<Link>>("ctaLink");
+    var firstLink = links?.FirstOrDefault();
+    var linkText = item.Content.Value<string>("linkTitle");
+
+
 
                 <div class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-8 css-240cud" style="padding: 0 8px;">
                     <div class="solution-colbox">
@@ -66,18 +73,28 @@
                                 <h5>@title</h5>
                             </div>
                         }
-                        @if (!string.IsNullOrEmpty(description))
-                        {
-                            <div class="details-list offwhite minHeight">
-                                <p>@description</p>
-                            </div>
-                        }
-                        @if (linkPage != null && !string.IsNullOrEmpty(linkText))
-                        {
-                            <a class="morebutton" href="@linkPage.Url()">
-                                @linkText <i class="arrow-right"></i>
-                            </a>
-                        }
+ @if (!string.IsNullOrEmpty(description))
+{
+    var listItems = description.Split('\n')
+                               .Where(x => !string.IsNullOrWhiteSpace(x))
+                               .ToList();
+
+    <ul class="details-list offwhite minHeight">
+        @foreach (var descItem in listItems)
+        {
+            <li>@descItem.Trim()</li>
+        }
+    </ul>
+}
+
+
+                     @if (firstLink != null)
+{
+    <a class="morebutton" href="@firstLink.Url" target="@firstLink.Target">
+        @linkText <i class="arrow-right"></i>
+    </a>
+}
+
                     </div>
                 </div>
             }
@@ -87,8 +104,8 @@
     <!-- Blog Posts Section -->
     @if (articles.Any())
     {
-        <div class="solution-blogs pdt50">
-            <div class="ant-row css-240cud" style="row-gap: 24px;">
+
+            <div class="ant-row css-240cud"style="margin-left: -8px; margin-right: -8px;">
                 @foreach (var post in articles)
                 {
                     var title = post.Value<string>("solutionTitle");
@@ -111,8 +128,17 @@
                     </div>
                 }
             </div>
-        </div>
+      
     }
 </div>
+<style>
+
+    @@media (min-width: 768px) {
+    :where(.css-240cud).ant-col-md-offset-6 {
+        margin-inline-start: 25%;
+    }
+}
+
 
 </style>
+

@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
 @using Umbraco.Cms.Core.Models.PublishedContent
 
 @{
@@ -11,17 +12,18 @@
 <div class="core-offering">
     <div class="k2s-green-container defaultPadding">
 
-        <div class="row">
-            <div class="col-md-6">
-                @if (!string.IsNullOrEmpty(offeringsTitle))
+        <!-- ================= TITLE + DESCRIPTION ================= -->
+        <div class="ant-row css-240cud" style="margin-left:-8px;margin-right:-8px;">
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px;padding-right: 8px">
+                @if (!string.IsNullOrWhiteSpace(offeringsTitle))
                 {
                     <div class="header-title black">
                         <h2>@offeringsTitle</h2>
                     </div>
                 }
             </div>
-            <div class="col-md-6">
-                @if (!string.IsNullOrEmpty(offeringsDescription))
+            <div class="ant-col gutter-row coltype  ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                @if (!string.IsNullOrWhiteSpace(offeringsDescription))
                 {
                     <div class="header-title black">
                         @Html.Raw(offeringsDescription)
@@ -30,63 +32,96 @@
             </div>
         </div>
 
+        <!-- ================= SLIDER ================= -->
         @if (offerings != null && offerings.Any())
         {
-            <div class="carousel-wrapper position-relative">
-                <!-- Carousel Container -->
-                <div id="service-slider" class="carousel-lists">
-                    @foreach (var offering in offerings)
+            <div class="core-slider-wrapper" style="position:relative;">
+
+                <!-- NEXT ARROW ONLY -->
+                <button class="custom-arrow next-arrow" type="button"></button>
+
+                <!-- SLIDER -->
+                <div id="core-slider" class="carousel-lists">
+                    @foreach (var item in offerings)
                     {
-                        var title = offering.Content.Value<string>("title");
-                        var image = offering.Content.Value<IPublishedContent>("image");
+                        var title = item.Content.Value<string>("title");
+                        var image = item.Content.Value<IPublishedContent>("image");
                         var imageUrl = image?.Url() ?? "";
 
-                        <article class="carousel-item">
+                        <!-- FIXED WIDTH REQUIRED FOR VARIABLE WIDTH -->
+                        <article class="carousel-item" style="width:301px">
                             <div class="img-wrapper">
-                                @if (!string.IsNullOrEmpty(imageUrl))
+                                @if (!string.IsNullOrWhiteSpace(imageUrl))
                                 {
                                     <img src="@imageUrl" alt="@title" />
                                 }
                             </div>
-                            @if (!string.IsNullOrEmpty(title))
-                            {
-                                <p>@Html.Raw(title)</p>
-                            }
+                            <p class="f32">@title</p>
                         </article>
                     }
                 </div>
-
-                <!-- Custom Arrows -->
-                <button class="custom-arrow prev-arrow">&#10094;</button>
-                <button class="custom-arrow next-arrow">&#10095;</button>
             </div>
         }
     </div>
 </div>
-
 <script>
-    $('#service-slider').slick({
-    slidesToShow: 3,       // default desktop
-    slidesToScroll: 1,
-    infinite: true,
-    dots: false,
-    arrows: true,
-    prevArrow: $('.custom-prev'),
-    nextArrow: $('.custom-next'),
-    responsive: [
-        {
-            breakpoint: 1200, // large tablets
-            settings: { slidesToShow: 3 }
-        },
-        {
-            breakpoint: 992, // tablets
-            settings: { slidesToShow: 2 }
-        },
-        {
-            breakpoint: 768, // mobile
-            settings: { slidesToShow: 1 }
-        }
-    ]
-});
+$(document).ready(function () {
 
+    var $slider = $('#core-slider');
+
+    if ($slider.length && !$slider.hasClass('slick-initialized')) {
+
+        $slider.slick({
+            infinite: true,
+            slidesToScroll: 1,
+            variableWidth: true,        // ✅ REQUIRED for fixed-width slides
+            arrows: true,
+            prevArrow: false,           // 🔴 NO PREV
+            nextArrow: $('.next-arrow'),
+            dots: false,
+    
+            autoplay: true,
+            autoplaySpeed: 3000,
+            speed: 600,
+            pauseOnHover: true,
+            pauseOnFocus: false,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: { arrows: true }
+                },
+                {
+                    breakpoint: 992,
+                    settings: { arrows: true }
+                },
+                {
+                    breakpoint: 768,
+                    settings: { arrows: false }
+                }
+            ]
+        });
+    }
+});
 </script>
+<style>
+    /* Hide overflow correctly */
+.core-slider-wrapper {
+    overflow: hidden;
+}
+
+
+.core-offering .header-title {
+    margin-bottom: 40px;
+}
+
+
+
+/* Mobile fix for variableWidth slick */
+@@media (max-width: 768px) {
+    #core-slider .slick-slide {
+        width: auto !important; 
+        /* 👈 critical */
+    }
+}
+  
+</style>

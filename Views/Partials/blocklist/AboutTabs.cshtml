@@ -8,8 +8,10 @@
     var tabCount = aboutTabs.Count();
 }
 
-<div class="k2s-green-container inner tab">
+
+<div class="landing-screen defaultPadding">
     <div class="customTabWrapper about">
+        <div class="k2s-green-container inner tab">
         <ul class="tab-list tablength-@tabCount">
             @for (int i = 0; i < tabCount; i++)
             {
@@ -28,23 +30,28 @@
             var image = tab.Content.Value<IPublishedContent>("image");
 
             <div class="aboutcontent @(i == 0 ? "active" : "hidden")">
-                <div class="aboutcontent-inner" style="display:flex; gap:20px; align-items:flex-start;">
-                    <div class="text-content" style="flex:1;">
+
+                <div class="aboutcontent-inner">
+                    <div class="text-content">
                         <div class="header-title black flexstyle">
                             <h4 class="ant-typography">@heading</h4>
                             <p class="ant-typography ant-typography-secondary">@Html.Raw(text)</p>
                         </div>
                     </div>
-                    <div class="about-img-wrapper" style="flex:1;">
-                        @if (image != null)
+
+                    <div class="about-img-wrapper">
+                        @if (image != null && !string.IsNullOrWhiteSpace(image.Url()))
                         {
-                            <img alt="@heading" src="@image.Url()" style="width:100%;" />
+                            <img src="@image.Url()" alt="@heading" />
                         }
                     </div>
+
                 </div>
             </div>
         }
     </div>
+
+</div>
 </div>
 
 <script>
@@ -69,6 +76,50 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <style>
+/* Tab content visibility */
 .aboutcontent.hidden { display: none; }
 .aboutcontent.active { display: block; }
+
+/* Inner flex container */
+.aboutcontent-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Text content */
+.text-content {
+    flex: 1;
+}
+
+/* White card */
+.flexstyle {
+    background: #fff;
+    padding: 70px;
+}
+
+/* Image wrapper */
+.about-img-wrapper {
+    flex: 1;
+    max-width: 520px;
+}
+.about-img-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+  
+}
+
+/* Responsive for mobile */
+@@media (max-width: 768px) {
+    .aboutcontent-inner {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .about-img-wrapper {
+        max-width: 100%;
+    }
+}
 </style>

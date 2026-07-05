@@ -1,0 +1,91 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+    Layout = "Master1.cshtml";
+}
+
+<div class="coming-soon">
+    <div class="k2s-green-container defaultPadding">
+        <div class="not-found">
+            <div class="not-found-content">
+                <div class="ant-row" style="margin-left:-8px;margin-right:-8px;row-gap:16px;">
+                    
+                    <!-- Left Content -->
+                    <div class="ant-col ant-col-xs-24 ant-col-md-12" style="padding:0 8px;">
+                        <div class="header-title center">
+                            <h1 class="title-center">
+                                <span style="color:#cb0969;">
+                                    @Model.Value("highlightText")
+                                </span>
+                                @Model.Value("pageTitle")
+                            </h1>
+
+                            <p>@Model.Value("description")</p>
+                        </div>
+
+                        <div class="header-title mt50">
+                            @{
+                                // Get the button link properly
+                                var buttonLinks = Model.Value<IEnumerable<Umbraco.Cms.Core.Models.Link>>("buttonLink");
+                                var buttonLink = buttonLinks?.FirstOrDefault();
+                            }
+                            @if (buttonLink != null)
+                            {
+                                <a class="morebutton" href="@buttonLink.Url" target="@buttonLink.Target">
+                                    @Model.Value("buttonText") <i class="arrow-right"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Right Image -->
+                    <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                        <div class="soon">
+                            @{
+                                var image = Model.Value<IPublishedContent>("comingSoonImage");
+                            }
+                            @if (image != null)
+                            {
+                                <img src="@image.Url()" alt="Coming Soon" />
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.coming-soon {
+  background: #e9eaf5;
+}
+.coming-soon .morebutton {
+  display: flex;
+  height: auto;
+  width: 120px;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: #fff;
+  background: #cb0969;
+  padding: 10px;
+  border-radius: 4px;
+}
+.coming-soon .soon img {
+  width: 100%;
+}
+.coming-soon h1 {
+  font-size: 94px;
+  text-align: left;
+}
+.coming-soon p {
+  color: rgb(23, 28, 77);
+  opacity: 0.6;
+  margin-top: 30px;
+  text-align: left;
+}
+</style>

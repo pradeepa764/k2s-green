@@ -1,82 +1,251 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Extensions
 
 @{
     Layout = "Master1.cshtml";
+
+    var title = Model.Value<string>("title");
+    var image = Model.Value<IPublishedContent>("image");
+    var body = Model.Value<string>("body");
+    var date = Model.Value<DateTime>("date");
+
+    var authorName = Model.Value<string>("authorName");
+    var authorRole = Model.Value<string>("authorRole");
+    var authorImage = Model.Value<IPublishedContent>("authorImage");
+
+    var allNews = Model.Parent?
+        .Children()
+        .Where(x => x.ContentType.Alias == "insightBlogPost" && x.Value<bool>("isNews"))
+        .ToList();
+
+    var relatedPosts = allNews?
+        .Where(x => x.Id != Model.Id)
+        .Take(3)
+        .ToList();
+
+    if (relatedPosts != null && relatedPosts.Count < 3)
+    {
+        var fallback = allNews
+            .Where(x => !relatedPosts.Any(r => r.Id == x.Id))
+            .Take(3 - relatedPosts.Count);
+
+        relatedPosts.AddRange(fallback);
+    }
+
+    relatedPosts = relatedPosts?
+        .OrderByDescending(x => x.Value<DateTime?>("date"))
+        .ToList();
 }
 
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        font-family: "Segoe UI", sans-serif;
-        background-color: #ffffff;
-    }
+<main>
 
-    .blog-post {
-        width: 100%;
-        min-height: 100vh; /* full page height */
-        padding: 2rem 0; /* remove side padding */
-    }
+    <!-- ARTICLE SECTION -->
+    <div class="landing-screen about defaultPaddingBanner">
+        <div class="k2s-green-container inner alltab">
 
-    .blog-post h1 {
-        font-size: 3rem;
-        color: #2c3e50;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
+            <!-- PAGE TITLE -->
+            <div class="header-title center marginHalf" data-aos="fade-up">
+                <h1 class="undefined full">@title</h1>
+            </div>
 
-    .blog-post .date {
-        font-size: 1rem;
-        color: #888888;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
+            <!-- FEATURE IMAGE -->
+            @if (image != null)
+            {
+                <div class="image-wrapper" data-aos="fade-down">
+                    <img src="@image.Url()" alt="@title" />
+                </div>
+            }
 
-    .blog-image {
-        width: 100%; /* full width */
-        height: 500px; /* adjust as needed */
-        overflow: hidden;
-        margin-bottom: 2rem;
-    }
+            <!-- CONTENT ROW -->
+            <div class="ant-row pdt50 css-240cud" data-aos="fade-up" data-aos-duration="2000" style="margin-left: -16px; margin-right: -16px; row-gap: 16px;">
 
-    .blog-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
+                <!-- LEFT : AUTHOR INFO -->
+                <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-8 css-240cud"
+                     style="padding-left:16px; padding-right:16px;">
 
-    .blog-body {
-        font-size: 1.2rem;
-        color: #333333;
-        line-height: 1.8;
-        width: 100%; /* full width */
-        max-width: none; /* remove text width limit */
-        margin: 0; /* no auto-center */
-        padding: 0 2rem; /* optional left-right breathing room */
-    }
+                    <div class="articleInfo">
 
-    .blog-body p {
-        margin-bottom: 1.5rem;
-    }
-</style>
+                        <span>Written By</span>
 
-<article class="blog-post">
-    <h1>@Model.Value("title")</h1>
+                        <ul class="articleOwner">
+                            <li>
+                                <div class="imgbox">
+                                    @if (authorImage != null)
+                                    {
+                                        <img src="@authorImage.Url()" alt="@authorName" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/media/author-img.png" alt="author" />
+                                    }
+                                </div>
 
-    @{
-        var blogImage = Model.Value<IPublishedContent>("image");
-    }
-    @if (blogImage != null)
+                                <div class="info">
+                                    <span>@authorName</span>
+                                    <span>@authorRole</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul class="article-posted">
+                            <li>
+                                <div class="info">
+                                    <span>Posted on</span>
+                                    <span>@date.ToString("dd MMMM, yyyy")</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul class="article-posted">
+                            <li>
+                                <div class="info">
+                                    <span>Share this post</span>
+                                     <span>@date.ToString("dd MMMM, yyyy")</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div> <!-- ✅ LEFT COLUMN CLOSED PROPERLY -->
+
+                <!-- RIGHT : CONTENT -->
+                <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-16 css-240cud"style="padding-left: 16px; padding-right: 16px;">
+
+                    <div class="insight-detail-content">
+                        @Html.Raw(Model.Value("body"))
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- READ MORE SECTION -->
+    @if (relatedPosts != null && relatedPosts.Any())
     {
-        <div class="blog-image">
-            <img src="@blogImage.Url()" alt="@Model.Value("title")" />
+        <div class="k2s-green-container defaultPadding">
+
+            <div class="header-title">
+                <h3>Read More</h3>
+            </div>
+
+            <div class="ant-row css-240cud" style="row-gap:16px;">
+
+                @foreach (var post in relatedPosts)
+                {
+                    var rTitle = post.Value<string>("title");
+                    var rDate = post.Value<DateTime>("date");
+                    var rImage = post.Value<IPublishedContent>("image");
+                    var rBody = post.Value<string>("body");
+
+                    var excerpt = (rBody ?? string.Empty).StripHtml().Truncate(120);
+
+                    <div class="ant-col insightBlock ant-col-xs-24 ant-col-sm-12 ant-col-md-8 css-240cud"
+                         style="padding-left:8px; padding-right:8px;">
+
+                        <div class="blockbox">
+                            <img src="@rImage?.Url()" alt="@rTitle" />
+                        </div>
+
+                        <div class="article-content">
+                            <p class="date">@rDate.ToString("dd MMM, yyyy")</p>
+
+                            <h3 class="title">
+                                <a href="@post.Url()">@rTitle</a>
+                            </h3>
+
+                            <p class="content">@excerpt</p>
+
+                            <a class="morebutton btn" href="@post.Url()">
+                                Read More <i class="arrow-right pink"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                }
+            </div>
         </div>
     }
 
-    <div class="blog-body">
-        @Html.Raw(Model.Value("body"))
-    </div>
-</article>
+</main>
+
+<style>
+/* ===============================
+   ARTICLE DETAIL – CLEAN LAYOUT
+   =============================== */
+
+/* LEFT COLUMN – AUTHOR */
+.landing-screen.about .ant-col-md-8 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+/* RIGHT COLUMN – CONTENT */
+.landing-screen.about .ant-col-md-16 {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+}
+
+/* AUTHOR BOX – REMOVE EXTRA GAP */
+.landing-screen.about .articleInfo {
+    width: 90%;
+    min-height: 370px;
+    padding: 30px;           /* reduced from 30 */
+    margin: 0;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+/* CONTENT */
+.insight-detail-content {
+    width: 100%;
+    font-family: "F37 Ginger";
+    font-size: 18px;
+    line-height: 32px;
+    font-weight: 300;
+    text-align: left;
+  
+    
+    
+}
+.header-title h3 {
+        margin-bottom: 20px;
+        font-size: 32px;
+        line-height: 36px;
+        color:pink;
+    }
+
+/* Headings inside content */
+
+
+/* Page title spacing */
+.landing-screen.about h1 {
+    margin: 0;
+}
+
+/* Prevent Ant gutter overflow */
+.landing-screen.about .ant-col {
+    min-width: 0;
+}
+
+/* ===============================
+   MOBILE
+   =============================== */
+@@media (min-width: 768px) {
+    :where(.css-240cud).ant-col-md-8 {
+        --ant-display: block;
+        display: block;
+        display: var(--ant-display);
+        flex: 0 0 33.33333333333333%;
+        max-width: 33.33333333333333%;
+    }
+    @@media (max-width: 640px) {
+    .header-title h3 {
+        margin-bottom: 20px;
+        font-size: 32px;
+        line-height: 36px;
+    }
+}
+
+   </style>

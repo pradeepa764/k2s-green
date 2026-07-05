@@ -5,7 +5,7 @@
     <div class="k2s-green-container inner alltab">
         
         <!-- Title + Highlight -->
-        <div class="header-title center">
+        <div class="header-title center" data-aos="fade-up">
         <h1>
                 @Model.Value("bookingTitle") 
                 <span style="color: rgb(203, 9, 105);">
@@ -15,7 +15,7 @@
         </div>
 
         <!-- Hero Banner -->
-        <div class="image-wrapper" >
+        <div class="image-wrapper" data-aos="fade-down">
             @{
                 var banner = Model.Value<IPublishedContent>("image"); // 👈 check alias
                 var bannerUrl = banner?.Url() ?? "";

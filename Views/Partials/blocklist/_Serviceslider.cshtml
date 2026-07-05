@@ -5,26 +5,41 @@
 <div class="energy_solutions defaultPadding g-bb-white">
     <div class="k2s-green-container">
         <div class="ant-row css-240cud">
-            <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px; margin: 0 auto; text-align:center;">
+<div class="ant-col ant-col-xs-24 ant-col-md-12 ant-col-md-offset-6 css-240cud"
+                 style="padding-left:8px;padding-right:8px;margin:0 auto;text-align:center;">
                 <div class="header-title black center">
-                    <h2>@Model.Value("sliderTitle")</h2>
+                    <h2>
+    @Model.Value("sliderTitle")
+</h2>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="adaptive-container
-        <!-- Slick slider -->
-        <div class="slick-slider" id="service-slider">
-            @foreach (var slide in Model.Value<IEnumerable<BlockListItem>>("serviceSlides"))
-            {
-                var img = slide.Content.Value<IPublishedContent>("Image");
-                <div class="slideContainer">
-                    <div class="slideWrapper" style="background-image:url('@img?.Url()')">
-                        <div class="alt-tag">@slide.Content.Value("Title")</div>
-                    </div>
-                </div>
-            }
+    <div class="adaptive-container">
+
+        <!-- Service Slider -->
+        <div id="serve-slider">
+
+           @{
+    var index = 0;
+    var widthOrder = new[] { "wide", "small", "wide", "medium" };
+}
+
+@foreach (var slide in Model.Value<IEnumerable<BlockListItem>>("serviceSlides"))
+{
+    var img = slide.Content.Value<IPublishedContent>("Image");
+    var widthClass = widthOrder[index % widthOrder.Length];
+
+    <div class="slideContainer @widthClass">
+        <div class="slideWrapper" style="background-image:url('@img?.Url()')">
+            <div class="alt-tag">@slide.Content.Value("Title")</div>
+        </div>
+    </div>
+
+    index++;
+}
         </div>
 
         <!-- Custom navigation -->
@@ -32,37 +47,103 @@
             <button class="custom-prev"></button>
             <button class="custom-next"></button>
         </div>
+
     </div>
 </div>
 
-<style>
-
-
-</style>
-
 <script>
-    $('#service-slider').slick({
-    slidesToShow: 3,       // default desktop
+jQuery(function ($) {
+
+    var $slider = $('#serve-slider');
+
+    if (!$slider.length) return;
+
+    if ($slider.hasClass('slick-initialized')) {
+        $slider.slick('unslick');
+    }
+
+    $slider.slick({
+    variableWidth: true,
+    centerMode: true,
     slidesToScroll: 1,
     infinite: true,
+    arrows: false,
     dots: false,
-    arrows: true,
-    prevArrow: $('.custom-prev'),
-    nextArrow: $('.custom-next'),
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
     responsive: [
         {
-            breakpoint: 1200, // large tablets
-            settings: { slidesToShow: 3 }
-        },
-        {
-            breakpoint: 992, // tablets
-            settings: { slidesToShow: 2 }
-        },
-        {
-            breakpoint: 576, // mobile
-            settings: { slidesToShow: 1 }
+            breakpoint:768,
+            settings: {
+                variableWidth: false,
+                centerMode: false,
+                slidesToScroll: 1
+            }
         }
     ]
 });
 
+    $('.custom-next').on('click', function () {
+        $slider.slick('slickNext');
+    });
+
+    $('.custom-prev').on('click', function () {
+        $slider.slick('slickPrev');
+    });
+
+});
 </script>
+
+<style>
+/* ===============================
+   SLIDER BASE
+   =============================== */
+
+/* ===============================
+   SLIDER BASE (DESKTOP)
+   =============================== */
+
+#serve-slider {
+    margin: 0 -8px;
+}
+
+#serve-slider .slick-slide {
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+/* REQUIRED for variableWidth */
+#serve-slider .slideContainer {
+    display: inline-block;
+    width:100%;
+   
+}
+
+/* Desktop widths */
+#serve-slider .slideContainer.small  { width: 300px; }
+#serve-slider .slideContainer.medium { width: 400px; }
+#serve-slider .slideContainer.wide   { width: 500px; }
+
+/* Slide visuals */
+.adaptive-container .slideContainer .slideWrapper {
+    width: 100%;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Text */
+.adaptive-container .slideWrapper .alt-tag {
+    font-size: 20px;
+    padding: 60px 10px 20px;
+}
+
+/* ===============================
+
+
+
+
+</style>

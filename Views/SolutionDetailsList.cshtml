@@ -14,17 +14,24 @@
             <div class="ant-row" style="row-gap: 24px;">
                 @foreach (var detail in solutionDetails)
                 {
-                    var title = detail.Value<string>("blogTitle");
+                    var title1 = detail.Value<string>("blogTitle");
+                    var title2 =  detail.Value<string>("blogTitleHighlighted");
                     var image = detail.Value<IPublishedContent>("blogImage");
                     var paragraph = detail.Value<string>("paragraph");
 
                     <div class="ant-col ant-col-xs-24 ant-col-sm-12 ant-col-md-6">
                         <div class="solution-detail-card">
 
-                            @if (!string.IsNullOrEmpty(title))
-                            {
-                                <h3>@title</h3>
-                            }
+                           @if (!string.IsNullOrEmpty(title))
+{
+   <h1>
+    @Model.Value("title1") 
+    <span style="color: rgb(203, 9, 105);">
+        @Model.Value("title2")
+    </span>
+    
+</h1>   
+}
 
                             @if (image != null)
                             {

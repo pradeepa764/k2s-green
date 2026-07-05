@@ -1,0 +1,82 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    Layout = "Master1.cshtml";
+}
+
+<div class="container">
+
+    <h1>@Model.Value("pageTitle")</h1>
+
+    <p>@Model.Value("introText")</p>
+    
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]</div>
+    }
+
+    @using (Html.BeginUmbracoForm("SubmitLead", "LeadEnquiry"))
+    {
+     
+     
+        <div class="form-group">
+            <label>Business Name</label>
+            <input type="text" name="BusinessName" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label>Contact Person Name</label>
+            <input type="text" name="ContactPersonName" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label>Contact Number</label>
+            <input type="text" name="ContactNumber" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label>Business Industry</label>
+            <input type="text" name="BusinessIndustry" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label>Location Address</label>
+            <textarea name="LocationAddress" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Google Maps URL</label>
+            <input type="url" name="GoogleMapUrl" class="form-control" />
+        </div>
+
+      <div class="form-group">
+            <label>Expected Power Requirement</label>
+
+            <select name="ExpectedPowerRequirement" class="form-control">
+                <option value="">Select</option>
+                <option value="50kW">50kW</option>
+                <option value="100kW">100kW</option>
+                <option value="200kW">200kW</option>
+                <option value="500kW">500kW</option>
+                <option value="1GW">1GW</option>
+                <option value="5GW">5GW</option>
+                <option value="Other">Other</option>
+                
+            </select>
+        </div>
+    
+
+        <button type="submit" class="btn btn-primary">
+            @(Model.Value("submitButtonText") ?? "Submit Request")
+        </button>
+    }
+
+</div>

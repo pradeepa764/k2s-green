@@ -50,13 +50,14 @@
 .image-wrapper img,
 .k2s-green-container .image-wrapper img {
     display: block !important;
-    width: 100% !important;
+    
     max-width: 100% !important;
     height: auto !important;
     opacity: 1 !important;
     visibility: visible !important;
-     position: static !important;
+    
 }
+
 /* === Navbar color overrides === */
 .navbar-nav a {
     color: #1b1f3b !important;

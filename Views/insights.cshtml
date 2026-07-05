@@ -6,23 +6,28 @@
 @{
     Layout = "Master1.cshtml";
 
-    var heading = Model.Value<string>("heading");        
-    var highlight = Model.Value<string>("highLightWord"); 
+    var heading = Model.Value<string>("heading");
+    var highlight = Model.Value<string>("highLightWord");
 
     // Get the blog list node
     var blogList = Model.Children()
                         .FirstOrDefault(x => x.ContentType.Alias == "insightBlogList");
 
-    // Separate Insights and News
-    var insightPosts = blogList?.Children()
-                               .Where(x => x.ContentType.Alias == "insightBlogPost" 
-                                           && !x.Value<bool>("isNews"))
-                               .OrderByDescending(x => x.Value<DateTime>("date"));
+    // ✅ FIX: cache children once to preserve order
+   var allPosts = blogList?
+    .Children()
+    .Where(x => x.ContentType.Alias == "insightBlogPost")
+.OrderBy(x => x.Value<DateTime?>("date") ?? DateTime.MaxValue)
+    .ToList();
 
-    var newsPosts = blogList?.Children()
-                             .Where(x => x.ContentType.Alias == "insightBlogPost" 
-                                         && x.Value<bool>("isNews"))
-                             .OrderByDescending(x => x.Value<DateTime>("date"));
+
+    var insightPosts = allPosts?
+        .Where(x => !x.Value<bool>("isNews"))
+        .ToList();
+
+    var newsPosts = allPosts?
+        .Where(x => x.Value<bool>("isNews"))
+        .ToList();
 }
 
 <div class="landing-screen news defaultPadding">
@@ -78,7 +83,9 @@
                                                     <a href="@url">@title</a>
                                                 </h5>
                                                 <div class="content">@excerpt</div>
-                                                <a class="morebutton btn" href="@url">Read More <i class="arrow-right pink"></i></a>
+                                                <a class="morebutton btn" href="@url">
+                                                    Read More <i class="arrow-right pink"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -121,7 +128,9 @@
                                                     <a href="@url">@title</a>
                                                 </h5>
                                                 <div class="content">@excerpt</div>
-                                                <a class="morebutton btn" href="@url">Read More <i class="arrow-right pink"></i></a>
+                                                <a class="morebutton btn" href="@url">
+                                                    Read More <i class="arrow-right pink"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -134,15 +143,15 @@
                         </div>
                     </div>
 
-                </div> <!-- .tab-content -->
+                </div>
+
                 <div class="morebutton loadmore">Load More</div>
             </div>
         </div>
 
-    </div> <!-- .k2s-green-container -->
-</div> <!-- .landing-screen -->
+    </div>
+</div>
 
-<!-- Tab Switching Script -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const tabs = document.querySelectorAll(".tab-list li");
@@ -150,11 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     tabs.forEach(tab => {
         tab.addEventListener("click", function () {
-            // reset all
             tabs.forEach(t => t.classList.remove("selected"));
             panes.forEach(p => p.classList.remove("active"));
 
-            // activate selected
             this.classList.add("selected");
             const target = this.getAttribute("data-tab");
             document.getElementById(target).classList.add("active");
@@ -166,9 +173,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <style>
 .tab-pane { display: none; }
 .tab-pane.active { display: block; }
-.tab-list li.selected { font-weight: bold; border-bottom: 2px solid #cb0969; }
+.tab-list li.selected {
+    font-weight: bold;
+    border-bottom: 2px solid #cb0969;
+}
 </style>
-
-
 
 @await Html.PartialAsync("Stay Connected Section")

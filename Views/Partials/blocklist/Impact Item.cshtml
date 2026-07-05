@@ -1,55 +1,60 @@
-﻿
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using Umbraco.Cms.Core.Models.Blocks
-@using Umbraco.Cms.Core.Models.PublishedContent
-
-@{
-    var sectionTitle = Model.Value<string>("impactSectiontitle");
-    var sectionSubtitle = Model.Value<string>("impactSectionSubtitle");
-    var image = Model.Value<IPublishedContent>("impactImage");
-    var items = Model.Value<IEnumerable<BlockListItem>>("accordionItems");
-}
 
 <div class="impact-area defaultPadding">
     <div class="k2s-green-container">
-
         <!-- Section Header -->
         <div class="header-title center">
-            <h2 class="title-center black">@sectionTitle</h2>
-            @if (!string.IsNullOrEmpty(sectionSubtitle))
+            <h2 class="title-center black">@Model.Value("impactSectiontitle")</h2>
+            @if (!string.IsNullOrEmpty(Model.Value<string>("impactSectionSubtitle")))
             {
-                <p class="lightblack">@sectionSubtitle</p>
+                <p class="lightblack">@Model.Value("impactSectionSubtitle")</p>
             }
         </div>
 
         <div class="ant-row" style="margin-left: -8px; margin-right: -8px; row-gap: 16px;">
             <!-- Accordion Column -->
             <div class="ant-col ant-col-xs-24 ant-col-md-12" style="padding-left: 8px; padding-right: 8px;">
-                <div class="ant-collapse ant-collapse-icon-position-end k2sgreen-accordion" role="tablist">
-                    @if (items != null && items.Any())
+                <div class="k2sgreen-accordion impact">
+                    @if (Model.Value<IEnumerable<BlockListItem>>("accordionItems") is IEnumerable<BlockListItem> items && items.Any())
                     {
-                        int index = 0;
+                        var index = 0;
                         foreach (var item in items)
                         {
                             var content = item.Content;
-                            var isExpanded = content.Value<bool>("isExpanded");
-                            <div class="ant-collapse-item @(isExpanded ? "ant-collapse-item-active" : "")">
-                                <div class="ant-collapse-header" role="tab" aria-expanded="@(isExpanded.ToString().ToLower())" tabindex="0">
+                            var title = content.Value<string>("accordionItemTitle");
+                            var description = content.Value<string>("accordionItemDescription");
+                            index++;
+
+                            <div class="impact-area">
+                                <!-- Hidden checkbox -->
+                                <input type="checkbox" id="impact-toggle-@index" class="impact-toggle" @(index == 1 ? "checked" : "") />
+
+                                <label for="impact-toggle-@index" class="ant-collapse-header">
                                     <div class="ant-collapse-expand-icon">
-                                        <span role="img" class="anticon @(isExpanded ? "anticon-minus" : "anticon-plus") ant-collapse-arrow"></span>
+                                        <span class="anticon anticon-plus ant-collapse-arrow">
+                                            <svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor">
+                                                <path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path>
+                                                <path d="M192 474h672q8 0 8 8v60q0 8-8 8H160q-8 0-8-8v-60q0-8 8-8z"></path>
+                                            </svg>
+                                        </span>
+                                        <span class="anticon anticon-minus ant-collapse-arrow">
+                                            <svg viewBox="64 64 896 896" width="1em" height="1em" fill="currentColor">
+                                                <path d="M872 474H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h720c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"></path>
+                                            </svg>
+                                        </span>
                                     </div>
-                                    <span class="ant-collapse-header-text">@content.Value("accordionItemTitle")</span>
-                                </div>
-                                @if (isExpanded)
-                                {
-                                    <div class="ant-collapse-content ant-collapse-content-active" role="tabpanel">
-                                        <div class="ant-collapse-content-box">
-                                            <p>@content.Value("accordionItemDescription")</p>
+                                    <span class="ant-collapse-header-text">@title</span>
+                                </label>
+
+                                <div class="ant-collapse-content">
+                                    <div class="ant-collapse-content-box">
+                                        <div class="impact-content">
+                                            @Html.Raw(description)
                                         </div>
                                     </div>
-                                }
+                                </div>
                             </div>
-                            index++;
                         }
                     }
                 </div>
@@ -57,13 +62,121 @@
 
             <!-- Image Column -->
             <div class="ant-col ant-col-xs-24 ant-col-md-12" style="padding-left: 8px; padding-right: 8px;">
-                @if (image != null)
+                @if (Model.Value<IPublishedContent>("impactImage") is IPublishedContent image)
                 {
                     <div class="impact-image-wrapper">
-                        <img class="impact-image" src="@image.Url()" alt="@sectionTitle" />
+                        <img class="impact-image" src="@image.Url()" alt="@Model.Value("impactSectiontitle")" />
                     </div>
                 }
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Hide checkbox */
+    .impact-toggle {
+        display: none;
+    }
+
+    /* Collapse content by default */
+    .impact-area .ant-collapse-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    /* Expand content when checked */
+    .impact-toggle:checked ~ label + .ant-collapse-content {
+        max-height: 500px; /* adjust if needed */
+    }
+
+    /* Toggle plus/minus icons */
+    .impact-area .anticon-minus {
+        display: none;
+    }
+
+    .impact-toggle:checked ~ label .anticon-plus {
+        display: none;
+    }
+
+    .impact-toggle:checked ~ label .anticon-minus {
+        display: inline-block;
+    }
+
+    /* Header styling */
+    .ant-collapse-header {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 22px 16px;
+        position: relative;
+        font-size: 28px;
+        font-weight: 300;
+        font-family: "F37 Ginger";
+    }
+
+    accordion.impact .ant-collapse-item .ant-collapse-header-text {
+        color: #171c4d;
+        font-size: 24px;
+        font-weight: 300;}
+        /* Move the icon container to the right */
+        .impact-area .ant-collapse-expand-icon
+
+    {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 0;
+        display: block;
+        width: 28px;
+        height: 28px;
+    }
+
+    /* Make space for the icon so text doesn’t overlap */
+    .impact-area label {
+        padding-right: 40px; /* adjust based on icon width + spacing */
+    }
+
+    .ant collapse header ant-collapse-content-text {
+        font-size: 28px;
+        font-weight: 300;
+        color: rgb(23, 28, 77);
+    }
+
+    /* Active colors */
+    .impact-toggle:checked ~ label .ant-collapse-header-text,
+    .impact-toggle:checked ~ label .ant-collapse-expand-icon {
+        color: rgb(203, 9, 105);
+    }
+
+    /* FAQ content styling */
+    .k2sgreen-accordion.impact .impact-content {
+        color: rgb(23, 28, 77,.8);
+        font-size: 18px;
+    }
+
+    /* Remove Ant Design pseudo-elements */
+    .k2sgreen-accordion.impact [class^="ant-collapse"]::before,
+    .k2sgreen-accordion.impact [class*=" ant-collapse"]::before,
+    .k2sgreen-accordion.impact [class^="ant-collapse"]::after,
+    .k2sgreen-accordion.impact [class*=" ant-collapse"]::after {
+        content: none;
+    }
+
+    /* Item borders */
+    .k2sgreen-accordion.impact .impact-area {
+        border-top: 1px solid rgb(184, 185, 204);
+    }
+
+        /* First item no top border */
+        .k2sgreen-accordion.impact .impact-area:first-child {
+            border-top: none;
+        }
+
+    .impact-area .ant-collapse-header .anticon {
+        font-size: 28px;
+    }
+
+</style>

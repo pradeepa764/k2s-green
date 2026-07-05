@@ -62,10 +62,10 @@ body {
 .collarge img {
   width: 100%;
 }
-
 .defaultPadding {
-  padding: 100px 0 100px;
+  padding: 100px 0;
 }
+
 @media (max-width: 568px) {
   .defaultPadding {
     padding: 40px 0 40px;
@@ -73,7 +73,7 @@ body {
 }
 
 .defaultPaddingBanner {
-  padding: 40px 0 100px;
+  padding: 40px 0 0px!important;
 }
 @media (max-width: 568px) {
   .defaultPaddingBanner {
@@ -117,7 +117,7 @@ body {
 }
 
 .pdt50 {
-  padding: 50px 0 0 0px;
+  padding: 50px 0 0;
 }
 
 .pdt80 {
@@ -208,11 +208,12 @@ body {
   }
 }
 .header-title h2 {
-  font-size: 56px !important;
-  font-weight: 300 !important;
-  font-family: "F37 Ginger", sans-serif !important;
-  line-height: 66px !important;
-  margin-bottom: 16px !important;
+  font-size: 56px ;
+  font-weight: 300;
+  font-family: "F37 Ginger", sans-serif;
+  line-height: 66px;
+  margin: 0 0 16px;
+
 }
 
 @media (max-width: 640px) {
@@ -256,7 +257,7 @@ body {
   font-weight: 300;
   font-family: "F37 Ginger";
   line-height: 32px;
-}
+}zzz
 .header-title h6.center {
     text-align: center;
 }
@@ -328,7 +329,7 @@ body {
   border-radius: 0px;
   padding: 16px 20px;
   text-align: left;
-  height: 48px;
+  height: auto;/*48px changed*/
   font-size: 16px;
   justify-content: flex-start;
   text-transform: uppercase;
@@ -417,8 +418,10 @@ input::placeholder, .ant-select-selection-placeholder, textarea::placeholder {
   position: absolute;
   right: 18px;
   top: 20px;
+
   background: url(../images/arrow-icon.png);
   background-size: contain;
+ 
 }
 .buttonLink .arrow-right.pink, .morebutton .arrow-right.pink {
   background: url(../images/pink-icon.png);
@@ -460,9 +463,9 @@ input::placeholder, .ant-select-selection-placeholder, textarea::placeholder {
   color: rgba(255, 255, 255, 0.64);
   font-weight: 300;
 }
-.columnStyle.s1 p.full {
+/*.columnStyle.s1 p.full {
   color: rgb(255, 255, 255);
-}
+}*/
 .columnStyle.s2 .counter {
   width: 100%;
   font-size: 32px;
@@ -720,7 +723,7 @@ input::placeholder, .ant-select-selection-placeholder, textarea::placeholder {
 
 
 .menu_wrapper .header .navigation {
-  width: 65%;
+  width:65%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -891,7 +894,7 @@ nav {
   }
 }
 .menu_wrapper .header .navigation .buttonLink {
-  margin-left: 0;
+  /*margin-left: auto;*/(changes)
     margin-right: 0;
   
 }
@@ -1087,7 +1090,7 @@ nav {
 }
 
 .clean-energy {
-  background: rgb(23, 28, 77) url("../images/background-clean-energy.png") no-repeat right bottom;
+  background: rgb(23, 28, 77) url("../images/background-clean-energy.6d5688b6.png") no-repeat right bottom;
   min-height: 700px;
   background-size: 70%;
   position: relative;
@@ -1272,6 +1275,7 @@ nav {
   height: auto;
   text-align: center;
   justify-content: center;
+  visiblity:visible;
 }
 
 .details-list {
@@ -1385,6 +1389,7 @@ nav {
   }
 }
 .how-it-works .flexbox.mtb {
+    
   margin: 70px 0px 50px;
 }
 .how-it-works .flexbox-right.imgwrapper {
@@ -1464,7 +1469,7 @@ nav {
 }
 .future-green-energy .image-wrapper {
   width: 70%;
-  height: 530px;
+  height: auto;
   position: relative;
   right: 0;
   z-index: 1;
@@ -1479,10 +1484,11 @@ nav {
 .future-green-energy .image-wrapper .newImg {
   position: absolute;
   width: 500px;
-  top: initial;
+  top:auto;
   left: 0;
   z-index: 1;
   bottom: 0px;
+;
 }
 .future-green-energy .image-wrapper .newImg img {
   width: 100%;
@@ -1505,12 +1511,12 @@ nav {
   .future-green-energy .image-wrapper {
     padding-top: 100px;
     width: 100%;
-    top: initial;
+    top: auto;
     bottom: 0px;
     height: auto;
   }
   .future-green-energy .image-wrapper .newImg {
-    top: initial;
+    top: auto;
     bottom: 0px;
     width: 50%;
     left: 0px;
@@ -1631,10 +1637,10 @@ nav {
 .smart-approach .smallPic {
   position: absolute;
   width: 300px;
-  height: 300px;
+ height: 300px;
   right: -400px;
   top: 50%;
-  transform: translate(0px, -50%);
+  transform: translateY(-50%);
   display: flex;
 }
 .smart-approach .smallPic .pic {
@@ -1737,9 +1743,9 @@ nav {
   background: rgb(233, 234, 245);
 }
 .solutions .header-title {
-  max-width: 500px;
+  width: 100%;
   margin: 0px;
-  margin: 0px auto;
+  margin: 0 0 40px auto;
 }
 .solutions .header-title h3 {
   margin: 0;
@@ -1761,6 +1767,13 @@ nav {
     padding-top: 0px;
   }
 }
+.solutions .ant-col-md-12 {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}                  /*included*/
+
+
+
 .solutions .type-of-solutions {
   display: flex;
   justify-content: space-between;
@@ -2060,6 +2073,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
 }
 .insights .header-title h3 {
   margin: 0;
@@ -2069,6 +2083,15 @@ nav {
   color: #253858;
   font-weight: 400;
   text-align: center;
+  
+}
+@media (max-width: 640px) {
+  .insights .header-title .morebutton {
+    font-size: 12px;
+    width: auto;    /*80px changed*/
+ 
+   
+  }
 }
 .insights .header-title .morebutton {
   background: #cb0969;
@@ -2082,23 +2105,18 @@ nav {
   text-align: left;
   position: relative;
   text-decoration: none;
-  padding: 0 20px;
-  font-weight: 300;
+  padding: 0 20px!important;
+  font-weight: 300!important;
   min-height: 50px;
   margin-top: 10px;
-  display: flex;
-  height: auto;
-  align-items: center;
+  display: flex!important;
+  height: auto!important;
+  align-items: center!important;
+  
   width: 200px;
-  display: flex;
-  height: auto;
+
 }
-@media (max-width: 640px) {
-  .insights .header-title .morebutton {
-    font-size: 12px;
-    width: 80px;
-  }
-}
+
 .insights .insight-image {
   margin: 0px 0 0 0;
 }
@@ -2250,7 +2268,6 @@ nav {
   display: flex;
   align-items: flex-end;
 }
-
 .core-offering {
   position: relative;
   background: #ffffff url("../images/clip-art-bg.svg") no-repeat top left;
@@ -2260,7 +2277,7 @@ nav {
   height: auto;
   margin: 0px 0px 70px auto;
   position: relative;
-  width: 95%;
+  width:95%;
 }
 @media (max-width: 980px) {
   .core-offering .carousel-lists {
@@ -2290,6 +2307,7 @@ nav {
     height: 350px;
     width: 80px;
     margin-bottom: 0px;
+  
   }
 }
 .core-offering .carousel-lists .carousel-item {
@@ -2357,7 +2375,7 @@ nav {
   position: relative;
 }
 .energy_solutions .header-title {
-  width: 80%;
+  width: 85%;/*changed from 80%*/
   margin: 0px auto;
 }
 .energy_solutions .header-title p {
@@ -2697,8 +2715,8 @@ nav {
 }
 
 .footer {
-  background-color: rgb(23, 28, 77);
-  padding: 40px 0 20px !important;
+    background-color:#171c4d;
+    padding: 40px 0 20px;
 }
 @media (max-width: 640px) {
   .footer {
@@ -3100,6 +3118,7 @@ nav {
   cursor: pointer;
   width: 40px;
   height: 40px;
+  
 }
 .smart-approach.about .custom-prev {
   left: -50px;
@@ -3563,9 +3582,9 @@ nav {
   display: block;
   position: relative;
 }
-.adaptive-container .slick-slide div {
+/*.adaptive-container .slick-slide div {
   width: 96%;
-}
+}*/
 .adaptive-container .slideContainer .slideWrapper {
   width: 100%;
   height: 400px;
@@ -3593,9 +3612,9 @@ nav {
   margin: 0px;
   background: linear-gradient(180deg, rgba(23, 28, 77, 0) 0%, #171C4D 141.28%);
 }
-.adaptive-container .slick-arrow {
+/*.adaptive-container .slick-arrow {
   display: none !important;
-}
+}*/
 .adaptive-container .custom-nav-buttons {
   position: absolute;
   bottom: -40px;
@@ -3620,6 +3639,34 @@ nav {
 .adaptive-container .custom-nav-buttons button.custom-next {
   background: url("../images/right-arrow.png") no-repeat 0 0;
 }
+@media (max-width: 768px) {              /*added whole*/
+
+    /* Undo legacy width shrink */
+    .adaptive-container .slick-slide div {
+        width: 100% !important;
+    }
+
+    /* Force single full-width slide */
+    #serve-slider .slideContainer {
+        width: 100% !important;
+        display: block;
+    }
+
+    /* Remove desktop spacing trick */
+    #serve-slider {
+        margin: 0 !important;
+    }
+
+    /* Mobile height */
+    .adaptive-container .slideContainer .slideWrapper {
+        height: 220px;
+    }
+ .adaptive-container .slideWrapper .alt-tag {
+        font-size: 16px;
+        padding: 40px 10px 16px;
+    }
+}
+
 
 .landing-container {
   display: flex;
@@ -3915,10 +3962,7 @@ nav {
 }
 
 .customTabWrapper .tab-list li {
-     display: inline-block !important; /* force visibility */
-    visibility: visible !important;
-    opacity: 1 !important;
-  color: #fff;
+     
   text-align: center;
   border-bottom: 1px solid #ccc;
   padding: 20px 0;
@@ -4073,10 +4117,10 @@ nav {
   background: #e9eaf5;
 }
 .bgnotFound .notfound {
-  background: url("../images/notfound.png") no-repeat center center;
-  background-size: contain;
-  width: 100%;
-  height: 550px;
+  background: url("/media/ryefdywp/notfound04e196c5.png") no-repeat center center!important;
+  background-size: contain!important;
+  width: 100%!important;
+  height: 550px!important;
 }
 @media (max-width: 640px) {
   .bgnotFound .notfound {
@@ -4138,5 +4182,3 @@ nav {
         display: block;
         opacity: 1;
     }
-
-

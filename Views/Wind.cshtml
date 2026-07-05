@@ -1,0 +1,567 @@
+﻿@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Wind>
+@using Umbraco.Extensions;
+@using Umbraco.Cms.Core.Models.Blocks;
+
+
+
+@{
+
+
+Layout = "Master1.cshtml";
+    // -----------------------
+    // 1️⃣ Page Banner
+    // -----------------------
+    var pageTitle1 = Model.Value<string>("pageTitle");
+    var pageTitle2 = Model.Value<string>("pageTitle2");
+    var pageImage = Model.Value<IPublishedContent>("pageImage");
+
+    // -----------------------
+    // 2️⃣ Reliable Section
+    // -----------------------
+    var reliableTitle = Model.Value<string>("reliableTitle");
+    var reliableDescription = Model.Value<string>("reliableDescription");
+
+    // -----------------------
+    // 3️⃣ Why Wind Section
+    // -----------------------
+    var whyWindTitle = Model.Value<string>("whyWindTitle");
+    var whyWindDescription = Model.Value<string>("whyWindDescription");
+    var windBlocks = Model.Value<IEnumerable<BlockListItem>>("windBlocks") ?? new List<BlockListItem>();
+
+    // -----------------------
+    // 4️⃣ How Wind Section
+    // -----------------------
+    var howWind = Model.Value<string>("HowWind");
+    var howWindDescription = Model.Value<string>("HowWindDescription");
+    var howItWorkLeft1 = Model.Value<IPublishedContent>("howItWorkLeft1");
+    var howItWorkLeft2 = Model.Value<IPublishedContent>("howItWorkLeft2");
+    var howItWorkRight = Model.Value<IPublishedContent>("howItWorkRight");
+
+    // -----------------------
+    // 5️⃣ Solutions Flip-Card Section
+    // -----------------------
+    var solutions = Model.Value<IEnumerable<BlockListItem>>("solution") ?? new List<BlockListItem>();
+    var heading = Model.Value<string>("whyGreenTitle");
+    var description = Model.Value<string>("whyGreenDescription");
+    var statBlocks = Model.Value<IEnumerable<BlockListItem>>("statCardBlock");
+    
+    //energy solution
+    var sectionTitle = Model.Value<string>("sectionTitle");
+    var sectionDescription = Model.Value<string>("sectionDescription");
+        BlockListModel tabs = Model.Value<BlockListModel>("tabs");
+     //smart slide approach   
+         var slides = Model.Value<IEnumerable<BlockListItem>>("windSlides");
+    int totalSlides = slides?.Count() ?? 0;
+    
+    
+  }  
+
+<!-- =====================
+     Page Banner
+===================== -->
+<div class="landing-screen wind defaultPaddingBanner">
+    <div class="k2s-green-container inner alltab">
+        <div>
+            <div class="header-title center" data-aos="fade-up">
+                <h1>@pageTitle1 <span style="color: rgb(203, 9, 105);">@pageTitle2</span></h1>
+            </div>
+            <div class="image-wrapper" data-aos="fade-down">
+                <img src="@(pageImage?.Url())" alt="@pageTitle1" />
+            </div>
+        </div>
+
+        <!-- Reliable Section -->
+        <div class="ant-row pdt50 css-240cud" style="margin-left: -8px; margin-right: -8px;">
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-xs-offset-0 ant-col-md-14 ant-col-md-offset-5 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                <div class="header-title black center">
+                    <h2>@reliableTitle</h2>
+                    <p class="lightblack">@reliableDescription</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =====================
+     Why Wind Section
+===================== -->
+<div class="k2s-green-container inner brd">
+    <div class="ant-row pdt80 css-240cud" style="margin-left: -8px; margin-right: -8px;">
+        <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-xs-offset-0 ant-col-md-12 ant-col-md-offset-6 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+            <div class="header-title black center half">
+                <h2>@whyWindTitle</h2>
+                <p class="lightblack">@Html.Raw(whyWindDescription)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ant-row pdt50 css-240cud" style="margin-left: -16px; margin-right: -16px; row-gap: 16px;">
+        @foreach (var block in windBlocks)
+        {
+            var blockTitle = block.Content.Value<string>("counter");
+            var blockDesc = block.Content.Value<string>("description");
+            <div class="ant-col gutter-row ant-col-xs-24 ant-col-sm-12 ant-col-md-6 css-240cud" style="padding-left: 16px; padding-right: 16px;">
+                <div class="columnStyle s2 aos-init" data-aos="fade-up" data-aos-anchor-placement="top-center">
+                    <div class="counter">@blockTitle</div>
+                    <p>@blockDesc</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- =====================
+     How Wind Section
+===================== -->
+<div class="defaultPadding">
+    <div class="k2s-green-container inner energy-solutions">
+        <div class="ant-row pdt50 css-240cud" style="margin-left: -8px; margin-right: -8px;">
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-xs-offset-0 ant-col-md-12 ant-col-md-offset-6 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                <div class="header-title black center">
+                    <h2>@howWind</h2>
+                    <p class="lightblack">@Html.Raw(howWindDescription)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ant-row pdt50 collarge css-240cud" style="margin-left: -8px; margin-right: -8px; row-gap: 16px;">
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                <div class="ant-row css-240cud">
+<div class="ant-col ant-col-12 left1 css-240cud">
+
+                        <img alt="how-it-work-left1" src="@(howItWorkLeft1?.Url())" />
+                    </div>
+                    <div class="ant-col ant-col-12 left2 css-240cud">
+                        <img alt="how-it-work-left2" src="@(howItWorkLeft2?.Url())" style="margin-top: 40px;" />
+                    </div>
+                </div>
+            </div>
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-sm-11 css-240cud" style="padding-left: 8px; padding-right: 8px;">
+                <img alt="how-it-work-right" src="@(howItWorkRight?.Url())" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- ===================== Energy Solutions Tabs ===================== -->
+<div class="energy_solutions defaultPadding g-bb-blue" style="background-color: rgb(23, 31, 86);">
+    <div class="k2s-green-container alltab white">
+
+        <div class="header-title white center">
+            <h2>@sectionTitle</h2>
+            <p class="blue">@Html.Raw(sectionDescription)</p>
+        </div>
+
+        <div class="k2s-green-container inner tab">
+            <div class="customTabWrapper wind">
+
+                @if (tabs != null && tabs.Any())
+                {
+                    <!-- ========== TAB HEADERS ========== -->
+                    <ul class="tab-list tablength-@tabs.Count">
+                        @foreach (var t in tabs.Select((value, index) => new { value, index }))
+                        {
+                            var tabTitle = t.value.Content.Value<string>("tabTitle");
+                            <li class="@(t.index == 0 ? "selected" : "")">@tabTitle</li>
+                        }
+                    </ul>
+
+                    <!-- ========== TAB CONTENT ========== -->
+                    <div class="tab-content">
+                        @foreach (var t in tabs.Select((value, index) => new { value, index }))
+                        {
+                            var tabIndex = t.index;
+                            var solutionsList = t.value.Content.Value<BlockListModel>("energySolutions");
+
+                            <div class="tab-pane" style="display:@(tabIndex == 0 ? "block" : "none")">
+
+                                @if (solutionsList != null && solutionsList.Any())
+                                {
+                                    <div class="ant-row css-240cud" style="margin-left:-8px; margin-right:-8px;">
+
+                                        <!-- LEFT COLUMN (Accordion) -->
+                                        <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding:8px;">
+                                            <div class="wind-accordion-list">
+
+                                                @for (var si = 0; si < solutionsList.Count; si++)
+                                                {
+                                                    var sol = solutionsList[si].Content;
+                                                    var title = sol.Value<string>("energyWindtitle");
+                                                    var daily = sol.Value<string>("dailyOutput");
+                                                    var ideal = sol.Value<string>("idealFor");
+                                                    var useCase = sol.Value<string>("useCase");
+                                                    var benefits = sol.Value<BlockListModel>("keyBenefits");
+                                                    var videoUrl = sol.Value<IPublishedContent>("video")?.Url();
+
+                                                    <div class="ant-collapse ant-collapse-icon-position-start wind-accordion css-240cud"
+                                                         role="tablist" data-video="@videoUrl">
+
+                                                        <div class="ant-collapse-item">
+
+                                                            <!-- HEADER -->
+                                                            <div class="ant-collapse-header" role="tab" tabindex="0">
+                                                                <span class="ant-collapse-expand-icon">
+                                                                    <span class="accordion-icon" style="font-size:28px; display:inline-block; width:28px; text-align:center;">+</span>
+                                                                </span>
+                                                                <span class="ant-collapse-header-text">@title</span>
+                                                            </div>
+
+                                                            <!-- CONTENT -->
+                                                            <div class="ant-collapse-content" style="display:none">
+                                                                <div class="ant-collapse-content-box">
+                                                                    <ul class="energy-solution-list">
+                                                                        @if (!string.IsNullOrWhiteSpace(daily))
+                                                                        { <li><strong>Daily Output:</strong> @daily</li> }
+
+                                                                        @if (benefits != null && benefits.Any())
+                                                                        {
+                                                                            <li><strong>Key Benefits:</strong>
+                                                                                <ul>
+                                                                                    @foreach (var b in benefits)
+                                                                                    {
+                                                                                        var benefitText = b.Content.Value<string>("benefitText");
+                                                                                        if (!string.IsNullOrWhiteSpace(benefitText))
+                                                                                        {
+                                                                                            <li>@benefitText</li>
+                                                                                        }
+                                                                                    }
+                                                                                </ul>
+                                                                            </li>
+                                                                        }
+
+                                                                        @if (!string.IsNullOrWhiteSpace(ideal))
+                                                                        { <li><strong>Ideal For:</strong> @ideal</li> }
+
+                                                                        @if (!string.IsNullOrWhiteSpace(useCase))
+                                                                        { <li><strong>Use Case:</strong> @useCase</li> }
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <!-- RIGHT COLUMN (Video) -->
+                                        <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding:8px;">
+                                            <div class="energySolutonImg-wrapper">
+                                                <video id="windSolutionVideo-@tabIndex" autoplay loop playsinline
+                                                       style="width:100%; object-fit:cover; border-radius:8px;"></video>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== JS ===================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tabHeaders = document.querySelectorAll(".tab-list li");
+    const tabPanes = document.querySelectorAll(".tab-pane");
+
+    // ---------------- SWITCHING TABS ----------------
+    tabHeaders.forEach((tab, idx) => {
+        tab.addEventListener("click", () => {
+
+            tabHeaders.forEach(t => t.classList.remove("selected"));
+            tab.classList.add("selected");
+
+            tabPanes.forEach((pane, pidx) => {
+                pane.style.display = (pidx === idx) ? "block" : "none";
+
+                // Reset all accordions when switching tabs
+               // Reset accordions + auto-open first when switching tabs
+if (pidx === idx) {
+
+    const items = pane.querySelectorAll(".ant-collapse-item");
+    const video = pane.querySelector("video");
+
+    items.forEach(i => {
+        i.classList.remove("ant-collapse-item-active");
+        i.querySelector(".ant-collapse-content").style.display = "none";
+        i.querySelector(".accordion-icon").textContent = "+";
+    });
+
+    // Auto-open the first accordion
+    const firstItem = items[0];
+    if (firstItem) {
+        firstItem.classList.add("ant-collapse-item-active");
+        firstItem.querySelector(".ant-collapse-content").style.display = "block";
+        firstItem.querySelector(".accordion-icon").textContent = "−";
+
+        const videoUrl = firstItem.closest(".wind-accordion").getAttribute("data-video");
+        if (video && videoUrl) {
+            video.src = videoUrl;
+            video.load();
+            video.play();
+        }
+    }
+}
+
+            });
+        });
+    });
+
+    // ---------------- ACCORDION BEHAVIOR ----------------
+    document.querySelectorAll(".wind-accordion-list .ant-collapse-header").forEach(header => {
+        header.addEventListener("click", function () {
+
+            const item = this.closest(".ant-collapse-item");
+            const pane = item.closest(".tab-pane");
+            const video = pane.querySelector("video");
+
+            const allItems = pane.querySelectorAll(".ant-collapse-item");
+
+            allItems.forEach(i => {
+                const c = i.querySelector(".ant-collapse-content");
+                const icon = i.querySelector(".accordion-icon");
+
+                if (i === item) {
+                    const open = i.classList.contains("ant-collapse-item-active");
+
+                    if (open) {
+                        i.classList.remove("ant-collapse-item-active");
+                        c.style.display = "none";
+                        icon.textContent = "+";
+
+                        video.removeAttribute("src");
+                        video.load();
+                    } else {
+                        i.classList.add("ant-collapse-item-active");
+                        c.style.display = "block";
+                        icon.textContent = "−";
+
+                        const url = i.closest(".wind-accordion").getAttribute("data-video");
+                        if (url) {
+                            video.src = url;
+                            video.load();
+                            video.play();
+                        }
+                    }
+                } else {
+                    i.classList.remove("ant-collapse-item-active");
+                    i.querySelector(".ant-collapse-content").style.display = "none";
+                    i.querySelector(".accordion-icon").textContent = "+";
+                }
+            });
+        });
+    });
+
+});
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tabs = document.querySelectorAll(".tab-list li");
+
+    function applyTabColors() {
+        tabs.forEach(t => {
+            if (t.classList.contains("selected")) {
+                t.style.color = "#ff4da6";   // 💗 pink for selected
+            } else {
+                t.style.color = "white";     // default white for others
+            }
+        });
+    }
+
+    // Apply colors on load
+    applyTabColors();
+
+    // Apply colors on click
+    tabs.forEach(tab => {
+        tab.addEventListener("click", function () {
+            tabs.forEach(t => t.classList.remove("selected"));
+            this.classList.add("selected");
+            applyTabColors();
+        });
+    });
+
+});
+
+
+// =============== AUTO-OPEN FIRST ACCORDION ON PAGE LOAD =================
+document.addEventListener("DOMContentLoaded", function () {
+
+    const firstPane = document.querySelector(".tab-pane");   // first horizontal tab
+    if (!firstPane) return;
+
+    const firstItem = firstPane.querySelector(".ant-collapse-item");
+    if (!firstItem) return;
+
+    const firstContent = firstItem.querySelector(".ant-collapse-content");
+    const firstIcon = firstItem.querySelector(".accordion-icon");
+
+    const video = firstPane.querySelector("video");
+    const videoUrl = firstPane.querySelector(".wind-accordion").getAttribute("data-video");
+
+    // Open the first item
+    firstItem.classList.add("ant-collapse-item-active");
+    firstContent.style.display = "block";
+    firstIcon.textContent = "−";
+
+    // Play video if available
+    if (video && videoUrl) {
+        video.src = videoUrl;
+        video.load();
+        video.play();
+    }
+});
+
+
+
+</script>
+
+@functions {
+    string Clean(string input)
+    {
+        return System.Text.RegularExpressions.Regex.Replace(input ?? "", "<.*?>", "");
+    }
+}
+
+<section class="why-green">
+    <div class="k2s-green-container defaultPadding">
+
+        <!-- Section Heading -->
+        <div class="header-title" data-aos="fade-up" data-aos-duration="1200">
+            @if (!string.IsNullOrWhiteSpace(heading))
+            {
+                <h2 class="title-center">@heading</h2>
+            }
+            @if (!string.IsNullOrWhiteSpace(description))
+            {
+                <p class="title-center">@Html.Raw(description)</p>
+            }
+        </div>
+
+@if (statBlocks != null && statBlocks.Any())
+{
+    <div class="ant-row pdt50">
+        @foreach (var item in statBlocks)
+        {
+            var counter = item.Content.Value<string>("counter");
+            var desc = Clean(item.Content.Value<string>("description"));
+
+            <div class="ant-col gutter-row coltype ant-col-xs-24 ant-col-sm-12 ant-col-md-8">
+                <div class="columnStyle2 s1" data-aos="flip-left" data-aos-duration="1200">
+                    <div class="counter">@counter</div>
+                    <div class="description">
+                        <p>@desc</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+</div>
+
+
+
+
+<div class="smart-approach about">
+    <div class="k2s-green-container defaultPadding_xl">
+        <div class="ant-row css-240cud">
+            <div data-aos="fade-up" data-aos-anchor-placement="top-center"
+                 class="ant-col g-bb-white containerPadding ant-col-xs-24 ant-col-md-8 css-240cud">
+
+                <div class="slick-slider-container">
+                    <div class="slick-slider" id="sliding">
+                        @if (slides != null && slides.Any())
+                        {
+                            foreach (var slide in slides)
+                            {
+                                var title = slide.Content.Value<string>("slideTitle");
+                                var descript = slide.Content.Value<string>("slideDescription");
+
+                                <div class="slide">
+                                    <div class="header-title auto" style="width:100%; display:inline-block;">
+                                        <h3>@title</h3>
+                                        <p>@Html.Raw(descript)</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    @if (totalSlides > 0)
+                    {
+                        <div class="slide-counter">1 / @totalSlides</div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function () {
+
+    // 🔥 UPDATE SLIDE COUNTER ON INIT + CHANGE
+    $('#sliding').on('init reInit afterChange', function (event, slick, currentSlide) {
+        var i = (currentSlide ? currentSlide : 0) + 1;
+        $('.slide-counter').text(i + " / " + slick.slideCount);
+    });
+
+    // 🔥 SLICK INITIALIZE
+    $('#sliding').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: false,
+        infinite: true,
+        centerMode: false,
+        autoplay: true,
+autoplaySpeed: 3000,
+
+     customPaging: function (slider, i) {
+            return '<div class="custom-dot"></div>';
+        }
+
+    });
+
+});
+</script>
+
+
+
+@await Html.PartialAsync("New Blog List")
+
+<style>
+     .left1, 
+.left2 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+}
+.left1 img,
+.left2 img {
+    width: auto !important;
+    max-width: 100% !important;
+    height: auto;
+    display: block;
+}
+
+
+
+</style>

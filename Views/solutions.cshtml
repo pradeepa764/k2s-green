@@ -1,11 +1,11 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Solutions>
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @{
 	Layout = "Master1.cshtml";
 }
   
-<main>
+
     <div class="landing-screen hydro defaultPadding">
         <div class="k2s-green-container inner">
             <div class="header-title center" data-aos="fade-up">
@@ -26,8 +26,5 @@
 
         @await Html.PartialAsync("Partials/SolutionList", Model)
         @await Html.PartialAsync("Partials/WhyK2sGreen", Model)
-       
-
-            @await Html.PartialAsync("New Blog List")
-@await Html.PartialAsync("Stay Connected Section")
-</main>
+      @await Html.PartialAsync("New Blog List")
+@await Html.PartialAsync("Partials/Stay Connected Section",Model)

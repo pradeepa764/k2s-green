@@ -1,0 +1,22 @@
+{
+  "javascript": [
+    "/App_Plugins/CrmAudit/audit.controller.js"
+  ],
+  "dashboards": [
+    {
+      "alias": "audit",
+      "view": "/App_Plugins/CrmAudit/audit.html",
+      "weight": 10,
+      "conditions": [
+        {
+          "alias": "Umb.Condition.SectionAlias",
+          "match": "content"
+        },
+        {
+          "alias": "Umb.Condition.ContentTypeAlias",
+          "match": "lead"
+        }
+      ]
+    }
+  ]
+}

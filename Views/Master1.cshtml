@@ -16,8 +16,13 @@
 
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" />
+   
+    <!-- jQuery + Slick -->
 
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+    
+  </script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
     <!-- React chunk CSS -->
     <link rel="stylesheet" href="@Url.Content("~/css/2.551aa434.chunk.css")" />
@@ -25,17 +30,16 @@
     <!-- Your custom CSS -->
     <link rel="stylesheet" href="@Url.Content("~/css/main1.css")" />
     <link rel="stylesheet" href="@Url.Content("~/css/style1.css")" />
-    <link rel="stylesheet" href="@Url.Content("~/css/framework.css")" />
 
+    <link rel="stylesheet" href="@Url.Content("~/css/framework.css")" />
     <link rel="stylesheet" href="@Url.Content("~/css/slick.css")" />
         <link rel="stylesheet" href="@Url.Content("~/css/slick-theme.css")" />
                 <link rel="stylesheet" href="@Url.Content("~/css/k2sgreen.css")" />
 
 
-    <!-- jQuery + Slick -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
+
+    
   <!-- Page-specific scripts -->
 
     @RenderSection("Head", required: false)
@@ -51,39 +55,53 @@
       </main>
 
       @await Html.PartialAsync("Footerr")
- 
- <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    
+    
+
+
+    <!-- AOS (Animation on Scroll) -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <!-- Slick Carousel -->
+
+    <!-- Your custom scripts that depend on jQuery and Slick -->
+    <script src="@Url.Content("~/scripts/slick.js")"></script>
+
+
 
 <script>
-$(document).ready(function(){
-    var $slider = $('#service-slider');
-    if($slider.length && typeof $slider.slick === 'function'){
-        $slider.slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            infinite: true,
-            arrows: true,
-            dots: true,
-            centerMode: true
+        // Replace $ with jQuery
+       $(document).ready(function() {
+            var $slider = jQuery('#service-slider');
+            if ($slider.length && typeof $slider.slick === 'function') {
+                $slider.slick({
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    arrows: true,
+                    
+                    dots: true,
+                    centerMode: true
+                     
+                });
+            } else {
+                console.warn('Slider not initialized: container missing or Slick not loaded.');
+            }
+
+            // Initialize AOS
+            AOS.init({
+                duration: 1200,
+                once: true
+            });
         });
-    } else {
-        console.warn('Slider not initialized: container missing or Slick not loaded.');
-    }
 
-    // Initialize AOS
-    AOS.init({
-        duration: 1200,
-        once: true
-    });
-});
+        // Ensure AOS triggers on load (for above-the-fold sections)
+        $(window).on('load', function () {
+            AOS.refresh();
+        });
 
-// Ensure AOS triggers on load (for above-the-fold sections)
-$(window).on('load', function () {
-    AOS.refresh();
-});
 </script>
-
-
    @RenderSection("Scripts", required: false)
  
 </body>

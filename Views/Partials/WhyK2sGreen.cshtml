@@ -1,25 +1,52 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using Umbraco.Cms.Core.Models.Blocks
 
+<div class="ant-row pdt50 css-240cud" style="margin-left:-8px; margin-right:-8px;">
+    <div class="ant-col ant-col-xs-24 ant-col-md-12 ant-col-md-offset-6 css-240cud" style="padding-left:8px; padding-right:8px;">
+                    <div class="header-title center mt100">
+            <h2 class="title-center black">@Model.Value("whyGreenTitle")</h2>
+            <p class="lightblack">@Model.Value("whyGreenDescription")</p>
+        </div>
 
-<div class="header-title center mt100">
-    <h2 class="title-center black">@Model.Value("whyGreenTitle")</h2>
-    <p class="lightblack">@Model.Value("whyGreenDescription") </p>
+    </div>
 </div>
 
-            <div class="ant-row solutions-grid pdt50 css-240cud">
+
+<div class="ant-row pdt50 mt60 css-240cud"style="margin-left:-8px; margin-right:-8px;row-gap:24px;">
     @foreach (var item in Model.Value<IEnumerable<BlockListItem>>("WhyK2sGreen"))
     {
-<div class="ant-col ant-col-6">
-            <div class="columnStyle2 s2">
-                @{
-    var title = item.Content.Value<string>("counter");
-    var description = item.Content.Value<string>("description");
-}
-<div class="counter">@title</div>
-<p>@description</p>
+        var title = item.Content.Value<string>("counter");
+        var description = item.Content.Value<string>("description");
 
+        <div class="ant-col gutter-row coltype 
+                    ant-col-xs-24 ant-col-sm-12 ant-col-md-6 css-240cud"
+             style="padding-left:8px; padding-right:8px;">
+             
+            <div class="columnStyle2 s2">
+                <div class="counter">@title</div>
+                <p>@description</p>
             </div>
+
         </div>
     }
 </div>
+<style>
+
+@@media (min-width: 768px) {
+    :where(.css-240cud).ant-col-md-offset-6 {
+        margin-inline-start: 25%;
+        
+    }
+    .header-title h2{
+    width:650px;
+}
+
+.header-title p.lightblack {
+    line-height: 32px;
+    /* 3 × 32px */
+width:650px;
+;
+
+}
+
+</style>

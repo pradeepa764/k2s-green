@@ -59,6 +59,7 @@
 }
 
 /* Mobile fix: make each column full width */
+
 @media (max-width: 768px) {
   .ant-col,
   .ant-col-xs-24 {
@@ -66,4 +67,4 @@
     max-width: 100% !important;
   }
 }
-        
+       

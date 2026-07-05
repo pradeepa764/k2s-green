@@ -1,39 +1,66 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.PublishedContent
 
 @{
     var title = Model.Value<string>("title");
     var description = Model.Value<string>("description");
-    
+    var buttonText = Model.Value<string>("buttonText");
+    var buttonLink = Model.Value<IPublishedContent>("buttonLink");
     var mainImage = Model.Value<IPublishedContent>("heroImage");
     var backgroundImage = Model.Value<IPublishedContent>("backgroundImage");
 }
 
-<div class="future-green-energy">
+<section class="future-green-energy">
     <div class="k2s-green-container defaultPadding_fge">
         <div class="future-green-energy-wrapper">
-            <div class="header-title white">
-                <h2>@title</h2>
-            </div>
-            
-            
-        </div>
-        <div class="image-wrapper">
-            <div class="newImg">
-                @if (mainImage != null)
+
+            <div class="header-title white" data-aos="fade-up">
+                @if (!string.IsNullOrWhiteSpace(title))
                 {
-                    <img class="windMil"
-                         alt="@title"
-                         data-aos="fade-up"
-                         data-aos-duration="1000"
-                         src="@mainImage.Url()" />
+                    <h2>@title</h2>
                 }
             </div>
-            @if (backgroundImage != null)
-            {
-                <img class="windMilbase"
-                     alt="@title"
-                     src="@backgroundImage.Url()" />
-            }
+
+            <div class="future-energy-text-right" data-aos="fade-up" data-aos-duration="800">
+                @if (!string.IsNullOrWhiteSpace(description))
+                {
+                    <p>@description</p>
+                }
+
+                @* CTA button — links to page or defaults to # *@
+                @if (!string.IsNullOrWhiteSpace(buttonText))
+                {
+                    var linkUrl = buttonLink?.Url() ?? "/solutions";
+                    <a type="primary" class="morebutton" href="@linkUrl">
+                        @buttonText <i class="arrow-right"></i>
+                    </a>
+                }
+            </div>
         </div>
-    </div>
+
+        <div class="image-wrapper">
+  <div class="newImg">
+    @if (mainImage != null)
+    {
+      <img 
+        class="windMil" 
+        alt="@title" 
+        src="@mainImage.Url()" 
+        data-aos="fade-up" 
+        data-aos-duration="1000" 
+      />
+    }
+  </div>
+
+  @if (backgroundImage != null)
+  {
+    <img 
+      class="windMilbase" 
+      alt="@title" 
+      src="@backgroundImage.Url()" 
+    />
+  }
 </div>
+
+    </div>
+</section>

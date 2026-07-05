@@ -1,0 +1,164 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IPublishedContent>
+@using Umbraco.Cms.Core.Models
+
+@{
+    Layout = "Master1.cshtml";
+
+    var title = Model.Value<string>("pageTitle1") ?? "Coming";
+    var highlight = Model.Value<string>("pageTitle2") ?? "Soon.";
+    var message = Model.Value<string>("summary") ?? "We are working on something amazing.";
+    var image = Model.Value<IPublishedContent>("image");
+    var links = Model.Value<IEnumerable<Link>>("ctaLink"); // Multi-link picker
+    var notifyLink = links?.FirstOrDefault(); // pick first link
+}
+
+    
+<div class="coming-soon">
+    <section class="landing-screen defaultPaddingBanner">
+    <div class="k2s-green-container defaultPadding">
+        <div class="not-found">
+            <div class="not-found-content">
+
+                <div class="ant-row css-240cud" style="margin-left:-8px;margin-right:-8px;row-gap:16px;">
+
+                    <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left:8px;padding-right:8px;">
+                        <div class="header-title center">
+                            <h1 class="title-center">
+                                <span style="color: rgb(203, 9, 105);">@title</span> @highlight
+                            </h1>
+                            <p>@message</p>
+                        </div>
+
+                        <div class="header-title mt50">
+                           @if (notifyLink != null)
+                                   {
+                                         
+                                         <a class="morebutton" href="@notifyLink.Url">Notify<i class="arrow-right"></i>
+                                                    </a>
+                                    }
+
+                        </div>
+                    </div>
+
+                    <div class="ant-col ant-col-xs-24 ant-col-md-12 css-240cud" style="padding-left:8px;padding-right:8px;">
+                        <div class="soon">
+                            @if (image != null)
+                            {
+                                <img src="@image.Url()" alt="Coming Soon">
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+ 
+
+/* Heading */
+.coming-soon .header-title h1,
+.coming-soon .title-center {
+        font-size: 94px;
+    margin: 0;
+    font-weight: 300;
+    font-family: "F37 Ginger";
+    line-height: 96px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+
+
+
+.coming-soon .header-title h1 span {
+    color: rgb(203, 9, 105);
+}
+
+/* Paragraph */
+.coming-soon p {
+    font-size: 18px;
+    line-height: 1.6;
+   
+    margin-bottom: 30px;
+        color: #171c4d;
+    opacity: .6;
+    margin-top: 30px;
+    text-align: left
+}
+
+/* Notify button (same as original) */
+.coming-soon .morebutton {
+    display: flex;
+    height:auto;
+    width:120px;
+    padding: 16px 20px;
+    background-color: #cb0969;
+    color: #fff;
+    text-align:left;
+    font-size:16px;
+    justify-content: flex-start;
+    text-transform: uppercase;
+  
+    letter-spacing: .08em;
+   border-radius:0;
+    text-decoration: none;
+    font-weight: 300;
+    
+}
+
+.coming-soon .morebutton:hover {
+    background-color: rgb(170, 0, 90);
+}
+
+/* IMAGE COLUMN using original ANT class */
+.coming-soon .image-column {
+    display: flex;            /* enable flex for alignment */
+    justify-content: flex-end; /* push image right */
+    align-items: center;      /* vertical center */
+}
+
+.coming-soon .soon img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* RESPONSIVE */
+@@media (max-width: 1024px) {
+    .coming-soon .header-title h1 {
+        font-size: 50px;
+    }
+    .coming-soon p {
+        font-size: 16px;
+    }
+}
+
+@@media (max-width: 768px) {
+    .coming-soon {
+        padding: 50px 15px;
+    }
+
+    .coming-soon .header-title h1 {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    .coming-soon p {
+        font-size: 15px;
+        text-align: center;
+    }
+
+    .coming-soon .image-column {
+        justify-content: center;  /* center image on mobile */
+        margin-top: 20px;
+    }
+}
+
+
+</style>

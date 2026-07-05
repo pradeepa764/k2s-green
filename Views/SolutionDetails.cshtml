@@ -7,39 +7,45 @@
     var paragraph = Model.Value<string>("paragraph");
 }
 
-<section class="solution-single">
-    <div class="container">
-        <h1>@title</h1>
+<section class="landing-screen wind defaultPaddingBanner">
+    <div class="k2s-green-container inner alltab">
 
-        @if (image != null)
-        {
-            <div class="solution-image">
-                <img src="@image.Url()" alt="@title" />
-            </div>
-        }
-
-        <div class="solution-content">
-            @Html.Raw(paragraph)
+        <div class="header-title center" data-aos="fade-up">
+            <h1>
+                @Model.Value("blogTitle")
+                <span style="color: rgb(203, 9, 105);">
+                    @Model.Value("blogTitleHighlighted")
+                </span>
+            </h1>
         </div>
+
+        <div class="solution-single">
+
+            @if (image != null)
+            {
+                <div class="solution-image">
+                    <img src="@image.Url()" alt="@title" />
+                </div>
+            }
+
+            <div class="solution-content">
+                @Html.Raw(paragraph)
+            </div>
+
+        </div>
+
     </div>
 </section>
-<style>
-    /* Container for the section */
-.solution-single .container {
-    max-width: 1320px; /* responsive max width */
-    width: 100%;
-    margin: 0 auto; /* center horizontally */
-    padding: 100px 20px; /* top & bottom padding with horizontal spacing */
-    box-sizing: border-box;
-    font-family: "F37 Ginger", sans-serif;
-}
 
+<style>
 /* Section heading */
-.solution-single h1 {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 40px;
-    text-align: center;
+.solution-single h1,
+.header-title h1 {
+    font-size: 72px;
+    margin: 0;
+    font-weight: 300;
+    font-family: "F37 Ginger";
+    line-height: 96px;
 }
 
 /* Image wrapper */
@@ -48,12 +54,6 @@
     margin-bottom: 40px;
 }
 
-.solution-image img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px; /* optional rounded corners */
-    display: inline-block;
-}
 
 /* Paragraph/content */
 .solution-content {
@@ -62,29 +62,25 @@
     color: #333;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @@media (max-width: 1024px) {
-    .solution-single h1 {
-        font-size: 30px;
+    .header-title h1 {
+        font-size: 40px;
+        line-height: 50px;
     }
-
     .solution-content {
         font-size: 16px;
     }
 }
 
 @@media (max-width: 768px) {
-    .solution-single .container {
-        padding: 50px 15px;
-    }
-
-    .solution-single h1 {
-        font-size: 26px;
+    .header-title h1 {
+        font-size: 28px;
+        line-height: 36px;
     }
 
     .solution-content {
         font-size: 15px;
     }
 }
-
 </style>
